@@ -1,5 +1,5 @@
 using System;
-using Cysharp.Text;
+using System.Text;
 
 namespace CodeWriter.ViewBinding
 {
@@ -8,7 +8,7 @@ namespace CodeWriter.ViewBinding
     {
         public override string TypeDisplayName => "Boolean";
 
-        public override void AppendValueTo(ref Utf16ValueStringBuilder builder)
+        public override void AppendValueTo(ref StringBuilder builder)
         {
             builder.Append(Value ? "yes" : "no");
         }
@@ -19,7 +19,7 @@ namespace CodeWriter.ViewBinding
     {
         public override string TypeDisplayName => "Integer";
 
-        public override void AppendValueTo(ref Utf16ValueStringBuilder builder) => builder.Append(Value);
+        public override void AppendValueTo(ref StringBuilder builder) => builder.Append(Value);
     }
 
     [Serializable]
@@ -27,13 +27,13 @@ namespace CodeWriter.ViewBinding
     {
         public override string TypeDisplayName => "Float";
 
-        public override void AppendValueTo(ref Utf16ValueStringBuilder builder) => builder.Append(Value);
+        public override void AppendValueTo(ref StringBuilder builder) => builder.Append(Value);
     }
 
     [Serializable]
     public sealed class ViewVariableString : ViewVariable<string, ViewVariableString>
     {
         public override string TypeDisplayName => "String";
-        public override void AppendValueTo(ref Utf16ValueStringBuilder builder) => builder.Append(Value);
+        public override void AppendValueTo(ref StringBuilder builder) => builder.Append(Value);
     }
 }

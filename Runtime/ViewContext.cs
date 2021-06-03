@@ -1,6 +1,5 @@
-using System;
 using System.Collections.Generic;
-using Cysharp.Text;
+using System.Text;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding
@@ -20,7 +19,7 @@ namespace CodeWriter.ViewBinding
             vars.Add(variable);
         }
 
-        protected ViewVariable FindVariable(string variableName)
+        public ViewVariable FindVariable(string variableName)
         {
             foreach (var variable in vars)
             {
@@ -33,9 +32,23 @@ namespace CodeWriter.ViewBinding
             return null;
         }
 
-        public Utf16ValueStringBuilder FormatText(string format)
+        public TViewVariable FindVariable<TViewVariable>(string variableName)
+            where TViewVariable : ViewVariable
         {
-            var sb = ZString.CreateStringBuilder();
+            foreach (var variable in vars)
+            {
+                if (variable.Name == variableName && variable is TViewVariable tVariable)
+                {
+                    return tVariable;
+                }
+            }
+
+            return null;
+        }
+
+        public StringBuilder FormatText(string format)
+        {
+            var sb = new StringBuilder();
 
             if (string.IsNullOrEmpty(format))
             {
@@ -50,7 +63,7 @@ namespace CodeWriter.ViewBinding
             int prev = 0, len = format.Length, start, end;
             while (prev < len && (start = format.IndexOf('<', prev)) != -1)
             {
-                sb.Append(format.AsSpan(prev, start - prev));
+                sb.Append(format, prev, start - prev);
 
                 for (int i = 0, varCount = VariablesCount; i < varCount; i++)
                 {
@@ -76,7 +89,7 @@ namespace CodeWriter.ViewBinding
 
             if (prev < format.Length)
             {
-                sb.Append(format.AsSpan(prev, format.Length - prev));
+                sb.Append(format, prev, format.Length - prev);
             }
 
             return sb;

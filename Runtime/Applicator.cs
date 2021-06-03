@@ -7,6 +7,9 @@ namespace CodeWriter.ViewBinding
         where TVariable : ViewVariable
     {
         [SerializeField]
+#if ODIN_INSPECTOR
+        [Sirenix.OdinInspector.Required]
+#endif
         private TTarget target;
 
         [SerializeField]
@@ -32,14 +35,17 @@ namespace CodeWriter.ViewBinding
 
         protected sealed override void ReSubscribe()
         {
-            source.Subscribe(this);
+            source?.Subscribe(this);
         }
 
         protected override void OnValidate()
         {
             base.OnValidate();
 
-            Apply(target, source);
+            if (target != null && source != null)
+            {
+                Apply(target, source);
+            }
         }
     }
 }
