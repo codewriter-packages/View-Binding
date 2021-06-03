@@ -8,12 +8,12 @@ using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Editor
 {
-    [CustomEditor(typeof(ViewContext))]
+    [CustomEditor(typeof(ViewContext), true)]
     internal class ViewContextEditor : UnityEditor.Editor
     {
         private static readonly GUIContent VariablesHeaderContent = new GUIContent("Variables");
 
-        private const string VariablesFieldName = "variables";
+        private const string VariablesFieldName = "vars";
         private const string NameFieldName = "name";
         private const string ContextFieldName = "context";
         private const string ValueFieldName = "value";
@@ -78,7 +78,7 @@ namespace CodeWriter.ViewBinding.Editor
             var valueRect = new Rect(rect) {xMin = nameRect.xMax};
 
             var nameFocused = GUI.GetNameOfFocusedControl().StartsWith("CW_VB_variable_name_") &&
-                              GUI.GetNameOfFocusedControl().EndsWith(index.ToString());
+                              GUI.GetNameOfFocusedControl() == "CW_VB_variable_name_" + index;
 
             if (elementFocused || nameFocused)
             {
@@ -109,11 +109,22 @@ namespace CodeWriter.ViewBinding.Editor
 
             EditorGUI.BeginChangeCheck();
 
+            var valueContent = new GUIContent(variableInstance.TypeDisplayName);
+
             var oldLabelWidth = EditorGUIUtility.labelWidth;
             var oldIntentLevel = EditorGUI.indentLevel;
             EditorGUIUtility.labelWidth = 80;
             EditorGUI.indentLevel = 0;
-            EditorGUI.PropertyField(valueRect, valueProp, new GUIContent(variableInstance.TypeDisplayName));
+
+            if (valueProp.propertyType == SerializedPropertyType.String)
+            {
+                EditorGUI.DelayedTextField(valueRect, valueProp, valueContent);
+            }
+            else
+            {
+                EditorGUI.PropertyField(valueRect, valueProp, valueContent);
+            }
+
             EditorGUIUtility.labelWidth = oldLabelWidth;
             EditorGUI.indentLevel = oldIntentLevel;
 

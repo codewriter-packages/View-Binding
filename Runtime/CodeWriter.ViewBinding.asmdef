@@ -1,6 +1,8 @@
 {
     "name": "CodeWriter.ViewBinding",
-    "references": [],
+    "references": [
+        "ZString"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

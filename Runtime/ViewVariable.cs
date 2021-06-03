@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Text;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding
@@ -126,5 +127,7 @@ namespace CodeWriter.ViewBinding
 
             return null;
         }
+
+        public abstract void AppendValueTo(ref Utf16ValueStringBuilder builder);
     }
 }

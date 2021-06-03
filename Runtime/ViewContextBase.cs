@@ -9,12 +9,16 @@ namespace CodeWriter.ViewBinding
         [NonSerialized]
         private readonly List<IViewContextListener> _listeners = new List<IViewContextListener>();
 
-        internal abstract IEnumerable<ViewVariable> EnumerateVariables();
+        internal abstract int VariablesCount { get; }
+
+        internal abstract ViewVariable GetVariable(int index);
 
         internal bool CanLink(ViewVariable variable, out ViewVariable variableToLink)
         {
-            foreach (var other in EnumerateVariables())
+            for (int index = 0, count = VariablesCount; index < count; index++)
             {
+                var other = GetVariable(index);
+
                 if (other != variable && other.Type == variable.Type && other.Name == variable.Name)
                 {
                     variableToLink = other;
@@ -33,12 +37,17 @@ namespace CodeWriter.ViewBinding
                 return null;
             }
 
+            AddListener(listener);
+
+            return variableToLink;
+        }
+
+        public void AddListener(IViewContextListener listener)
+        {
             if (!_listeners.Contains(listener))
             {
                 _listeners.Add(listener);
             }
-
-            return variableToLink;
         }
 
         protected internal void OnVariableChanged(ViewVariable variable)

@@ -61,8 +61,8 @@ namespace CodeWriter.ViewBinding.Editor
 
                 var context = (ViewContextBase) contextProp.objectReferenceValue;
 
-                var matchedVariables = context
-                    .EnumerateVariables()
+                var matchedVariables = Enumerable.Range(0, context.VariablesCount)
+                    .Select(index => context.GetVariable(index))
                     .Where(o => o != null && o.GetType() == fieldInfo.FieldType)
                     .ToList();
 

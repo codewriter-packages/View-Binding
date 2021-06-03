@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Adapters
@@ -18,6 +17,10 @@ namespace CodeWriter.ViewBinding.Adapters
         [HideInInspector]
         private ViewVariableFloat result;
 
+        internal override int VariablesCount => 1;
+
+        internal override ViewVariable GetVariable(int index) => result;
+
         protected override void OnValidate()
         {
             result.SetContext(this);
@@ -26,11 +29,6 @@ namespace CodeWriter.ViewBinding.Adapters
             base.OnValidate();
 
             Apply();
-        }
-
-        internal override IEnumerable<ViewVariable> EnumerateVariables()
-        {
-            yield return result;
         }
 
         protected override void ReSubscribe()
