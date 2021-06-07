@@ -20,10 +20,20 @@ namespace CodeWriter.ViewBinding.Editor
         {
             EditorGUI.BeginProperty(position, label, property);
 
+            position = EditorGUI.PrefixLabel(position, label);
+
+            using (new EditorGUI.DisabledScope(Application.isPlaying))
+            {
+                DrawContent(position, property);
+            }
+
+            EditorGUI.EndProperty();
+        }
+
+        private void DrawContent(Rect position, SerializedProperty property)
+        {
             var contextProp = property.FindPropertyRelative(ContextFieldName);
             var nameProp = property.FindPropertyRelative(NameFieldName);
-
-            position = EditorGUI.PrefixLabel(position, label);
 
             if (contextProp.objectReferenceValue == null)
             {
@@ -49,8 +59,6 @@ namespace CodeWriter.ViewBinding.Editor
                     contextProp.objectReferenceValue = parentContext;
                     contextProp.serializedObject.ApplyModifiedProperties();
                 }
-
-                return;
             }
             else
             {
@@ -86,9 +94,6 @@ namespace CodeWriter.ViewBinding.Editor
                     property.serializedObject.ApplyModifiedPropertiesWithoutUndo();
                 }
             }
-
-
-            EditorGUI.EndProperty();
         }
 
         private static int GetMatchedVariableIndex(List<ViewVariable> variables, string name)

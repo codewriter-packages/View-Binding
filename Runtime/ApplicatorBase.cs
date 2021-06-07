@@ -1,21 +1,32 @@
-using UnityEngine;
+using UniMob;
 
 namespace CodeWriter.ViewBinding
 {
-    public abstract class ApplicatorBase : MonoBehaviour, IViewContextListener
+    public abstract class ApplicatorBase : ViewBindingBehaviour
+#if UNITY_EDITOR
+        , IEditorViewContextListener
+#endif
     {
-        protected virtual void Start()
+        private Reaction _reaction;
+
+        protected override void Start()
         {
-            ReSubscribe();
+            base.Start();
+
+            _reaction = Atom.Reaction(Apply, debugName: name);
         }
 
-        protected virtual void OnValidate()
+        protected override void OnDestroy()
         {
-            ReSubscribe();
+            _reaction?.Deactivate();
+
+            base.OnDestroy();
         }
 
-        protected abstract void ReSubscribe();
+        protected abstract void Apply();
 
-        public abstract void OnContextVariableChanged(ViewVariable variable);
+#if UNITY_EDITOR
+        public abstract void OnEditorContextVariableChanged(ViewVariable variable);
+#endif
     }
 }

@@ -1,6 +1,8 @@
 {
     "name": "CodeWriter.ViewBinding",
-    "references": [],
+    "references": [
+        "GUID:f7da7540d2396044e940a9d258e05b05"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

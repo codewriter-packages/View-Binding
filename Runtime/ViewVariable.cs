@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
+using UniMob;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding
@@ -13,7 +13,7 @@ namespace CodeWriter.ViewBinding
         private T value;
 
         [NonSerialized]
-        private TVariable _linkedSource;
+        private MutableAtom<Atom<T>> _atomSource = Atom.Value(default(Atom<T>));
 
         public override string TypeDisplayName => typeof(T).Name;
 
@@ -21,60 +21,53 @@ namespace CodeWriter.ViewBinding
 
         public T Value
         {
-            get => _linkedSource != null ? _linkedSource.Value : value;
-            set
+            get
             {
-                if (Context == null)
+                if (Context.TryGetRootVariableFor<TVariable>(this, out var rootVariable))
                 {
-                    Debug.LogError("Context is null");
-                    return;
+                    return rootVariable.Value;
                 }
 
-                if (_linkedSource == null && Context.CanLink(this, out var source))
+#if UNITY_EDITOR
+                if (!Application.isPlaying)
                 {
-                    _linkedSource = (TVariable) source;
+                    return value;
+                }
+#endif
+
+                if (_atomSource.Value == null)
+                {
+                    return value;
                 }
 
-                if (_linkedSource != null)
-                {
-                    _linkedSource.Value = value;
-                }
-                else
-                {
-                    if (EqualityComparer<T>.Default.Equals(this.value, value))
-                    {
-                        return;
-                    }
-
-                    this.value = value;
-
-                    Context.OnVariableChanged(this);
-                }
+                return _atomSource.Value.Value;
             }
         }
 
-        public override bool IsLinkedTo(ViewVariable variable)
+        public void SetSource(Atom<T> source)
         {
-            return _linkedSource == variable;
+            if (Context.TryGetRootVariableFor<TVariable>(this, out var rootVariable))
+            {
+                rootVariable.SetSource(source);
+            }
+            else
+            {
+                _atomSource.Value = source;
+            }
         }
 
-        public override void Subscribe(IViewContextListener linkable)
+        public override bool IsRootVariableFor(ViewVariable viewVariable)
         {
-            if (Context == null)
-            {
-                Debug.LogError("Cannot link: context is null");
-                return;
-            }
-
-            var newSource = (TVariable) Context.Link(this, linkable);
-
-            if (newSource != _linkedSource)
-            {
-                _linkedSource = newSource;
-
-                linkable.OnContextVariableChanged(newSource);
-            }
+            return Context.TryGetRootVariableFor<TVariable>(viewVariable, out var rootVariable) &&
+                   rootVariable == this;
         }
+
+#if UNITY_EDITOR
+        public void SetValueEditorOnly(T newValue)
+        {
+            value = newValue;
+        }
+#endif
     }
 
     [Serializable]
@@ -92,11 +85,11 @@ namespace CodeWriter.ViewBinding
 
         public string Name => name;
 
-        protected ViewContextBase Context => context;
+        public ViewContextBase Context => context;
 
-        public abstract void Subscribe(IViewContextListener listener);
+        public abstract void AppendValueTo(ref StringBuilder builder);
 
-        public abstract bool IsLinkedTo(ViewVariable variable);
+        public abstract bool IsRootVariableFor(ViewVariable viewVariable);
 
         public void SetName(string newName)
         {
@@ -120,14 +113,12 @@ namespace CodeWriter.ViewBinding
                 return "Variable is none";
             }
 
-            if (!context.CanLink(this, out _))
+            if (!context.TryGetRootVariableFor<ViewVariable>(this, out _))
             {
                 return "Variable is missing";
             }
 
             return null;
         }
-
-        public abstract void AppendValueTo(ref StringBuilder builder);
     }
 }

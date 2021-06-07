@@ -12,6 +12,7 @@ namespace CodeWriter.ViewBinding.Editor
     internal class ViewContextEditor : UnityEditor.Editor
     {
         private static readonly GUIContent VariablesHeaderContent = new GUIContent("Variables");
+        private static readonly GUIContent ValueRuntimeContent = new GUIContent("");
 
         private const string VariablesFieldName = "vars";
         private const string NameFieldName = "name";
@@ -35,7 +36,12 @@ namespace CodeWriter.ViewBinding.Editor
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
-            _variablesListDrawer.DoLayoutList();
+
+            using (new EditorGUI.DisabledScope(Application.isPlaying))
+            {
+                _variablesListDrawer.DoLayoutList();
+            }
+
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -116,13 +122,20 @@ namespace CodeWriter.ViewBinding.Editor
             EditorGUIUtility.labelWidth = 80;
             EditorGUI.indentLevel = 0;
 
-            if (valueProp.propertyType == SerializedPropertyType.String)
+            if (Application.isPlaying)
             {
-                EditorGUI.DelayedTextField(valueRect, valueProp, valueContent);
+                EditorGUI.LabelField(valueRect, valueContent, ValueRuntimeContent);
             }
             else
             {
-                EditorGUI.PropertyField(valueRect, valueProp, valueContent);
+                if (valueProp.propertyType == SerializedPropertyType.String)
+                {
+                    EditorGUI.DelayedTextField(valueRect, valueProp, valueContent);
+                }
+                else
+                {
+                    EditorGUI.PropertyField(valueRect, valueProp, valueContent);
+                }
             }
 
             EditorGUIUtility.labelWidth = oldLabelWidth;
@@ -131,7 +144,7 @@ namespace CodeWriter.ViewBinding.Editor
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedPropertiesWithoutUndo();
-                TargetContext.OnVariableChanged(variableInstance);
+                TargetContext.NotifyEditorVariableChanged(variableInstance);
             }
         }
 

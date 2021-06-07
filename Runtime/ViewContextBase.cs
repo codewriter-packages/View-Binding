@@ -4,71 +4,71 @@ using UnityEngine;
 
 namespace CodeWriter.ViewBinding
 {
-    public abstract class ViewContextBase : MonoBehaviour
+    public abstract class ViewContextBase : ViewBindingBehaviour
     {
+#if UNITY_EDITOR
         [NonSerialized]
-        private readonly List<IViewContextListener> _listeners = new List<IViewContextListener>();
+        private readonly List<IEditorViewContextListener> _editorListeners = new List<IEditorViewContextListener>();
+#endif
 
-        internal abstract int VariablesCount { get; }
+        protected internal abstract int VariablesCount { get; }
 
-        internal abstract ViewVariable GetVariable(int index);
+        protected internal abstract ViewVariable GetVariable(int index);
 
-        internal bool CanLink(ViewVariable variable, out ViewVariable variableToLink)
+        internal bool TryGetRootVariableFor<TVariable>(ViewVariable variable, out TVariable rootVariable)
+            where TVariable : ViewVariable
         {
             for (int index = 0, count = VariablesCount; index < count; index++)
             {
                 var other = GetVariable(index);
 
-                if (other != variable && other.Type == variable.Type && other.Name == variable.Name)
+                if (other != variable &&
+                    other.Type == variable.Type &&
+                    other.Name == variable.Name &&
+                    other is TVariable tOther)
                 {
-                    variableToLink = other;
+                    rootVariable = tOther;
                     return true;
                 }
             }
 
-            variableToLink = default;
+            rootVariable = default;
             return false;
         }
 
-        internal ViewVariable Link(ViewVariable variable, IViewContextListener listener)
+#if UNITY_EDITOR
+        public void AddEditorListener(IEditorViewContextListener listener)
         {
-            if (!CanLink(variable, out var variableToLink))
+            if (Application.isPlaying)
             {
-                return null;
+                return;
             }
 
-            AddListener(listener);
-
-            return variableToLink;
-        }
-
-        public void AddListener(IViewContextListener listener)
-        {
-            if (!_listeners.Contains(listener))
+            if (!_editorListeners.Contains(listener))
             {
-                _listeners.Add(listener);
+                _editorListeners.Add(listener);
             }
         }
 
-        protected internal void OnVariableChanged(ViewVariable variable)
+        protected internal void NotifyEditorVariableChanged(ViewVariable variable)
         {
-            foreach (var listener in _listeners)
+            if (Application.isPlaying)
             {
-                listener.OnContextVariableChanged(variable);
+                return;
+            }
+
+            foreach (var listener in _editorListeners)
+            {
+                listener.OnEditorContextVariableChanged(variable);
             }
         }
-
-        protected virtual void Start()
-        {
-        }
-
-        protected virtual void OnValidate()
-        {
-        }
+#endif
     }
 
-    public interface IViewContextListener
+#if UNITY_EDITOR
+    public interface IEditorViewContextListener
     {
-        void OnContextVariableChanged(ViewVariable variable);
+        void OnEditorContextVariableChanged(ViewVariable variable);
     }
+#endif
 }

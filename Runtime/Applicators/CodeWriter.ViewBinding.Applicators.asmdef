@@ -1,7 +1,8 @@
 {
     "name": "CodeWriter.ViewBinding.Applicators",
     "references": [
-        "CodeWriter.ViewBinding"
+        "CodeWriter.ViewBinding",
+        "UniMob"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
