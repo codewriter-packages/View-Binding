@@ -30,6 +30,7 @@ public class ViewBindingSample : MonoBehaviour
     public ViewVariableBool soundEnabled;
     public ViewVariableBool musicEnabled;
     public ViewVariableFloat volume;
+    public ViewEventVoid onClose;
 
     private ViewState State { get; } = new ViewState();
 
@@ -38,6 +39,7 @@ public class ViewBindingSample : MonoBehaviour
         soundEnabled.BindTo(() => State.SoundEnabled);
         musicEnabled.BindTo(() => State.MusicEnabled);
         volume.BindTo(() => State.Volume);
+        onClose.BindTo(() => State.Close);
     }
 }
 
@@ -46,6 +48,11 @@ public class ViewState
     [Atom] public bool SoundEnabled { get; set; }
     [Atom] public bool MusicEnabled { get; set; }
     [Atom] public float Volume { get; set; }
+    
+    public void Close()
+    {
+        Debug.Log("Close clicked");
+    }
 }
 ```
 
@@ -60,6 +67,11 @@ public static class BindingExtension
     {
         variable.SetSource(Atom.Computed(f));
     }
+}
+
+public static void BindTo(this ViewEventVoid evt, Func<Action> f)
+{
+    evt.AddListener(() => f.Invoke()?.Invoke());
 }
 ```
 </details>
