@@ -71,49 +71,21 @@ namespace CodeWriter.ViewBinding
     }
 
     [Serializable]
-    public abstract class ViewVariable
+    public abstract class ViewVariable : ViewEntry
     {
-        [SerializeField]
-        private ViewContextBase context;
-
-        [SerializeField]
-        private string name;
-
-        public abstract string TypeDisplayName { get; }
-
-        public abstract Type Type { get; }
-
-        public string Name => name;
-
-        public ViewContextBase Context => context;
-
         public abstract void AppendValueTo(ref StringBuilder builder);
 
         public abstract bool IsRootVariableFor(ViewVariable viewVariable);
 
-        public void SetName(string newName)
+        internal override string GetErrorMessage()
         {
-            name = newName;
-        }
-
-        public void SetContext(ViewContextBase newContext)
-        {
-            context = newContext;
-        }
-
-        internal virtual string GetErrorMessage()
-        {
-            if (context == null)
+            var error = base.GetErrorMessage();
+            if (error != null)
             {
-                return "Context is null";
+                return error;
             }
 
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return "Variable is none";
-            }
-
-            if (!context.TryGetRootVariableFor<ViewVariable>(this, out _))
+            if (!Context.TryGetRootVariableFor<ViewVariable>(this, out _))
             {
                 return "Variable is missing";
             }

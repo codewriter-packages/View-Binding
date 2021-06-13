@@ -15,11 +15,6 @@ namespace CodeWriter.ViewBinding.Applicators
         [SerializeField]
         private TVariable source;
 
-        protected virtual void Reset()
-        {
-            target = GetComponent<TTarget>();
-        }
-
         protected sealed override void Apply()
         {
             if (target == null)
@@ -52,6 +47,14 @@ namespace CodeWriter.ViewBinding.Applicators
             base.OnValidate();
 
             source.Context.AddEditorListener(this);
+        }
+
+
+        protected override void Reset()
+        {
+            base.Reset();
+
+            target = GetComponent<TTarget>();
         }
 #endif
     }

@@ -13,6 +13,10 @@ namespace CodeWriter.ViewBinding
         }
 
 #if UNITY_EDITOR
+        protected virtual void Reset()
+        {
+        }
+
         protected virtual void OnValidate()
         {
         }

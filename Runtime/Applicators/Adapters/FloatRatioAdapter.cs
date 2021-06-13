@@ -22,8 +22,10 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         private ViewVariableFloat result;
 
         protected override int VariablesCount => 1;
+        protected override int EventCount => 0;
 
         protected override ViewVariable GetVariable(int index) => result;
+        protected override ViewEvent GetEvent(int index) => null;
 
         protected override void Start()
         {
