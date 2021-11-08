@@ -7,18 +7,18 @@ namespace CodeWriter.ViewBinding
         , IEditorViewContextListener
 #endif
     {
-        private Reaction _reaction;
+        private readonly LifetimeController _lifetimeController = new LifetimeController();
 
         protected override void Start()
         {
             base.Start();
 
-            _reaction = Atom.Reaction(Apply, debugName: name);
+            Atom.Reaction(_lifetimeController.Lifetime, Apply, debugName: name);
         }
 
         protected override void OnDestroy()
         {
-            _reaction?.Deactivate();
+            _lifetimeController?.Dispose();
 
             base.OnDestroy();
         }
