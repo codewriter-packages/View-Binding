@@ -37,11 +37,15 @@ namespace CodeWriter.ViewBinding.Editor
 
             if (contextProp.objectReferenceValue == null)
             {
+                var oldColor = GUI.color;
+
                 var contextRect = new Rect(position) {width = position.width / 2};
                 var findRect = new Rect(position) {xMin = contextRect.xMax};
 
+                GUI.color = oldColor * new Color(1f, 0.7f, 0.7f);
                 EditorGUI.PropertyField(contextRect, contextProp, GUIContent.none);
 
+                GUI.color = oldColor * new Color(0.9f, 1f, 1f);
                 if (property.serializedObject.targetObject is MonoBehaviour mb &&
                     GUI.Button(findRect, "Find Context in Parents"))
                 {
@@ -59,6 +63,8 @@ namespace CodeWriter.ViewBinding.Editor
                     contextProp.objectReferenceValue = parentContext;
                     contextProp.serializedObject.ApplyModifiedProperties();
                 }
+
+                GUI.color = oldColor;
             }
             else
             {
@@ -80,7 +86,15 @@ namespace CodeWriter.ViewBinding.Editor
                     .Prepend(new GUIContent("NONE"))
                     .ToArray();
 
+                var oldColor = GUI.color;
+                if (oldSelectedIndex == 0)
+                {
+                    GUI.color = oldColor * new Color(1f, 0.7f, 0.7f);
+                }
+
                 var newSelectedIndex = EditorGUI.Popup(dropdownRect, oldSelectedIndex, popupOptions);
+
+                GUI.color = oldColor;
 
                 if (newSelectedIndex != oldSelectedIndex && newSelectedIndex != -1)
                 {
