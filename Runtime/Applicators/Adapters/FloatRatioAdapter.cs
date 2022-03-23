@@ -1,4 +1,3 @@
-using UniMob;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
@@ -21,8 +20,6 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         [HideInInspector]
         private ViewVariableFloat result;
 
-        private readonly LifetimeController _lifetimeController = new LifetimeController();
-
         protected override int VariablesCount => 1;
         protected override int EventCount => 0;
 
@@ -33,13 +30,12 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         {
             base.Start();
 
-            result.SetSource(Atom.Computed(_lifetimeController.Lifetime, Adapt));
+            result.SetSource(Adapt);
         }
 
         protected override void OnDestroy()
         {
             result.SetSource(null);
-            _lifetimeController?.Dispose();
 
             base.OnDestroy();
         }
