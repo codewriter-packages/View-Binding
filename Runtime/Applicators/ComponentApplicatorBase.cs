@@ -46,9 +46,11 @@ namespace CodeWriter.ViewBinding.Applicators
         {
             base.OnValidate();
 
-            source.Context.AddEditorListener(this);
+            if (source != null && source.Context != null)
+            {
+                source.Context.AddEditorListener(this);
+            }
         }
-
 
         protected override void Reset()
         {

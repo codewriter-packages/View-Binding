@@ -9,6 +9,8 @@ namespace CodeWriter.ViewBinding
     {
         private readonly LifetimeController _lifetimeController = new LifetimeController();
 
+        public bool IsDestroyed => this == null;
+
         protected override void Start()
         {
             base.Start();

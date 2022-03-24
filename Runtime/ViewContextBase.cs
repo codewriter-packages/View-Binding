@@ -79,6 +79,8 @@ namespace CodeWriter.ViewBinding
                 return;
             }
 
+            _editorListeners.RemoveAll(it => it.IsDestroyed);
+
             foreach (var listener in _editorListeners)
             {
                 listener.OnEditorContextVariableChanged(variable);
@@ -90,6 +92,8 @@ namespace CodeWriter.ViewBinding
 #if UNITY_EDITOR
     public interface IEditorViewContextListener
     {
+        bool IsDestroyed { get; }
+
         void OnEditorContextVariableChanged(ViewVariable variable);
     }
 #endif

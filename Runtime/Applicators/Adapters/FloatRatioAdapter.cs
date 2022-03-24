@@ -20,6 +20,8 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         [HideInInspector]
         private ViewVariableFloat result;
 
+        public bool IsDestroyed => this == null;
+
         protected override int VariablesCount => 1;
         protected override int EventCount => 0;
 
