@@ -9,7 +9,7 @@ namespace CodeWriter.ViewBinding.Applicators
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.Required]
 #endif
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private TTarget target;
 
         [SerializeField]
@@ -45,6 +45,11 @@ namespace CodeWriter.ViewBinding.Applicators
         protected override void OnValidate()
         {
             base.OnValidate();
+
+            if (target == null || target.gameObject != gameObject)
+            {
+                target = GetComponent<TTarget>();
+            }
 
             if (source != null && source.Context != null)
             {

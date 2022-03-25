@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
 {
@@ -8,14 +9,16 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
 #endif
     {
         [SerializeField]
+        [FormerlySerializedAs("resultName")]
+        private string alias = "Result";
+
+        [Space]
+        [SerializeField]
         private ViewVariableFloat numerator;
 
         [SerializeField]
         private ViewVariableFloat denominator;
-
-        [SerializeField]
-        private string resultName = "Result";
-
+        
         [SerializeField]
         [HideInInspector]
         private ViewVariableFloat result;
@@ -58,7 +61,7 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
             denominator.Context.AddEditorListener(this);
 
             result.SetContext(this);
-            result.SetName(resultName);
+            result.SetName(alias);
         }
 
         public void OnEditorContextVariableChanged(ViewVariable variable)
