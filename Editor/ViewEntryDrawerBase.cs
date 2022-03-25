@@ -32,95 +32,108 @@ namespace CodeWriter.ViewBinding.Editor
 
         private void DrawContent(Rect position, SerializedProperty property)
         {
-            var contextProp = property.FindPropertyRelative(ContextFieldName);
             var nameProp = property.FindPropertyRelative(NameFieldName);
+            var contextProp = property.FindPropertyRelative(ContextFieldName);
 
-            if (contextProp.objectReferenceValue == null)
+            var nameRect = new Rect(position) {width = position.width / 2};
+            var contextRect = new Rect(position) {xMin = nameRect.xMax};
+
+            var entryDisplayName = nameProp.stringValue;
+            var entryDisplayContent = new GUIContent(entryDisplayName, entryDisplayName);
+            if (GUI.Button(nameRect, entryDisplayContent, EditorStyles.popup))
             {
-                var oldColor = GUI.color;
-
-                var contextRect = new Rect(position) {width = position.width / 2};
-                var findRect = new Rect(position) {xMin = contextRect.xMax};
-
-                GUI.color = oldColor * new Color(1f, 0.7f, 0.7f);
-                EditorGUI.PropertyField(contextRect, contextProp, GUIContent.none);
-
-                GUI.color = oldColor * new Color(0.9f, 1f, 1f);
-                if (property.serializedObject.targetObject is MonoBehaviour mb &&
-                    GUI.Button(findRect, "Find Context in Parents"))
-                {
-                    var parentContext = mb.GetComponentInParent<ViewContextBase>();
-                    if (parentContext == mb)
-                    {
-                        parentContext = null;
-
-                        if (mb.transform.parent != null)
-                        {
-                            parentContext = mb.transform.parent.GetComponentInParent<ViewContextBase>();
-                        }
-                    }
-
-                    contextProp.objectReferenceValue = parentContext;
-                    contextProp.serializedObject.ApplyModifiedProperties();
-                }
-
-                GUI.color = oldColor;
+                ShowEntryDropDown(nameRect, nameProp, contextProp);
             }
-            else
+
+            var oldColor = GUI.color;
+
+            GUI.color = oldColor * new Color(0.8f, 0.8f, 0.8f);
+
+            var context = (ViewContextBase) contextProp.objectReferenceValue;
+            var contextDisplayContent = new GUIContent(
+                GetContextDisplayName(property, context, true),
+                GetContextDisplayName(property, context));
+            if (GUI.Button(contextRect, contextDisplayContent, EditorStyles.popup))
             {
-                var contextRect = new Rect(position) {width = position.width / 2};
-                var dropdownRect = new Rect(position) {xMin = contextRect.xMax};
-
-                EditorGUI.PropertyField(contextRect, contextProp, GUIContent.none);
-
-                var context = (ViewContextBase) contextProp.objectReferenceValue;
-
-                var matchedEntries = EnumerateEntries(context)
-                    .Where(o => o != null && o.GetType() == fieldInfo.FieldType)
-                    .ToList();
-
-                var oldSelectedIndex = GetMatchedEntryIndex(matchedEntries, nameProp.stringValue) + 1;
-
-                var popupOptions = matchedEntries
-                    .Select(o => new GUIContent(o.Name))
-                    .Prepend(new GUIContent("NONE"))
-                    .ToArray();
-
-                var oldColor = GUI.color;
-                if (oldSelectedIndex == 0)
-                {
-                    GUI.color = oldColor * new Color(1f, 0.7f, 0.7f);
-                }
-
-                var newSelectedIndex = EditorGUI.Popup(dropdownRect, oldSelectedIndex, popupOptions);
-
-                GUI.color = oldColor;
-
-                if (newSelectedIndex != oldSelectedIndex && newSelectedIndex != -1)
-                {
-                    nameProp.stringValue = newSelectedIndex > 0
-                        ? matchedEntries[newSelectedIndex - 1].Name
-                        : string.Empty;
-
-                    property.serializedObject.ApplyModifiedProperties();
-                }
+                ShowContextDropDown(contextRect, property, contextProp);
             }
+
+            GUI.color = oldColor;
         }
 
         protected abstract IEnumerable<TEntry> EnumerateEntries(ViewContextBase context);
 
-        private static int GetMatchedEntryIndex(List<TEntry> entries, string name)
+        private void ShowContextDropDown(Rect position, SerializedProperty selfProperty, SerializedProperty contextProp)
         {
-            for (var index = 0; index < entries.Count; index++)
+            if (selfProperty.serializedObject.targetObject is MonoBehaviour mb)
             {
-                var entry = entries[index];
-                if (entry.Name == name)
+                var matchedContexts = mb.GetComponentsInParent<ViewContextBase>();
+
+                var menu = new GenericMenu();
+
+                foreach (var matchedContext in matchedContexts)
                 {
-                    return index;
+                    var isOn = contextProp.objectReferenceValue == matchedContext;
+                    var name = GetContextDisplayName(selfProperty, matchedContext);
+                    menu.AddItem(new GUIContent(name), isOn, SelectEntry, matchedContext);
+                }
+
+                menu.DropDown(position);
+
+                void SelectEntry(object contextObject)
+                {
+                    contextProp.objectReferenceValue = (ViewContextBase) contextObject;
+                    contextProp.serializedObject.ApplyModifiedProperties();
                 }
             }
+        }
 
-            return -1;
+        private void ShowEntryDropDown(Rect position, SerializedProperty nameProp, SerializedProperty contextProp)
+        {
+            var context = (ViewContextBase) contextProp.objectReferenceValue;
+
+            if (context == null)
+            {
+                return;
+            }
+
+            var matchedEntries = EnumerateEntries(context)
+                .Where(o => o != null && o.GetType() == fieldInfo.FieldType)
+                .ToList();
+
+            var menu = new GenericMenu();
+
+            foreach (var matchedEntry in matchedEntries)
+            {
+                var isOn = nameProp.stringValue == matchedEntry.Name;
+                menu.AddItem(new GUIContent(matchedEntry.Name), isOn, SelectEntry, matchedEntry.Name);
+            }
+
+            menu.DropDown(position);
+
+            void SelectEntry(object entryNameObject)
+            {
+                nameProp.stringValue = (string) entryNameObject;
+                nameProp.serializedObject.ApplyModifiedProperties();
+            }
+        }
+
+        private static string GetContextDisplayName(SerializedProperty selfProperty, ViewContextBase c,
+            bool shortName = false)
+        {
+            if (c == null)
+            {
+                return "null";
+            }
+
+            if (shortName &&
+                selfProperty.serializedObject.targetObject is MonoBehaviour mb &&
+                mb.gameObject == c.gameObject)
+            {
+                return c.GetType().Name;
+            }
+
+            return $"{c.name} ({c.GetType().Name})";
         }
     }
 }
