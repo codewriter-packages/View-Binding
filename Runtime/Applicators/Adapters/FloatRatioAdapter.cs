@@ -57,8 +57,15 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         {
             base.OnValidate();
 
-            numerator.Context.AddEditorListener(this);
-            denominator.Context.AddEditorListener(this);
+            if (numerator != null && numerator.Context != null)
+            {
+                numerator.Context.AddEditorListener(this);
+            }
+
+            if (denominator != null && denominator.Context != null)
+            {
+                denominator.Context.AddEditorListener(this);
+            }
 
             result.SetContext(this);
             result.SetName(alias);

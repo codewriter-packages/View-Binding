@@ -58,7 +58,10 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         {
             base.OnValidate();
 
-            source.Context.AddEditorListener(this);
+            if (source != null && source.Context != null)
+            {
+                source.Context.AddEditorListener(this);
+            }
 
             result.SetContext(this);
             result.SetName(alias);
