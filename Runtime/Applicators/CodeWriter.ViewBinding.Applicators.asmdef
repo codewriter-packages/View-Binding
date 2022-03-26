@@ -2,7 +2,8 @@
     "name": "CodeWriter.ViewBinding.Applicators",
     "references": [
         "CodeWriter.ViewBinding",
-        "UniMob"
+        "UniMob",
+        "UniMob.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
@@ -11,6 +12,12 @@
     "precompiledReferences": [],
     "autoReferenced": false,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unimob.ui",
+            "expression": "0.0.1",
+            "define": "UNIMOB_UI"
+        }
+    ],
     "noEngineReferences": false
 }
