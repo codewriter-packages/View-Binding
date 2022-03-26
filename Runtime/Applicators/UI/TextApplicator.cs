@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 namespace CodeWriter.ViewBinding.Applicators.UI
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(Text))]
     [AddComponentMenu("View Binding/UI/Text Applicator")]
     public sealed class TextApplicator : ComponentApplicatorBase<Text, ViewVariableString>

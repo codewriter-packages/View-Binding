@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.UnityEvent
 {
+    [DisallowMultipleComponent]
     [AddComponentMenu("View Binding/Unity Event/UnityEvent Float Applicator")]
     public sealed class UnityEventFloatApplicator : UnityEventApplicatorBase<float, ViewVariableFloat>
     {

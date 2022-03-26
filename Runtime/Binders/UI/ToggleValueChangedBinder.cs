@@ -3,13 +3,14 @@ using UnityEngine.UI;
 
 namespace CodeWriter.ViewBinding.Binders.UI
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(Toggle))]
     public class ToggleValueChangedBinder : ViewBindingBehaviour
     {
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.Required]
 #endif
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private Toggle toggle;
 
         [SerializeField]
@@ -26,6 +27,16 @@ namespace CodeWriter.ViewBinding.Binders.UI
         }
 
 #if UNITY_EDITOR
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+
+            if (toggle == null || toggle.gameObject != gameObject)
+            {
+                toggle = GetComponent<Toggle>();
+            }
+        }
+
         protected override void Reset()
         {
             base.Reset();

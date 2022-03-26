@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.UnityEvent
 {
+    [DisallowMultipleComponent]
     [AddComponentMenu("View Binding/Unity Event/UnityEvent String Applicator")]
     public sealed class UnityEventStringApplicator : UnityEventApplicatorBase<string, ViewVariableString>
     {

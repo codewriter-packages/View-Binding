@@ -3,13 +3,14 @@ using UnityEngine.UI;
 
 namespace CodeWriter.ViewBinding.Binders.UI
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(Button))]
     public class ButtonClickBinder : ViewBindingBehaviour
     {
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.Required]
 #endif
-        [SerializeField]
+        [SerializeField, HideInInspector]
         private Button button;
 
         [SerializeField]
@@ -26,6 +27,16 @@ namespace CodeWriter.ViewBinding.Binders.UI
         }
 
 #if UNITY_EDITOR
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+
+            if (button == null || button.gameObject != gameObject)
+            {
+                button = GetComponent<Button>();
+            }
+        }
+
         protected override void Reset()
         {
             base.Reset();

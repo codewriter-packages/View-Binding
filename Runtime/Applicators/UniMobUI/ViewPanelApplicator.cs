@@ -5,6 +5,7 @@ using UniMob.UI.Widgets;
 
 namespace CodeWriter.ViewBinding.Applicators.UniMobUI
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(ViewPanel))]
     [AddComponentMenu("View Binding/UI/ViewPanel Applicator")]
     public sealed class ViewPanelApplicator : ComponentApplicatorBase<ViewPanel, ViewVariableState>

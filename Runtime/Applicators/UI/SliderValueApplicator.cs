@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 namespace CodeWriter.ViewBinding.Applicators.UI
 {
+    [DisallowMultipleComponent]
     [RequireComponent(typeof(Slider))]
     [AddComponentMenu("View Binding/UI/Slider Value Applicator")]
     public sealed class SliderValueApplicator : ComponentApplicatorBase<Slider, ViewVariableFloat>
