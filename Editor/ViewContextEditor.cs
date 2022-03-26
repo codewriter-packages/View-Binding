@@ -88,7 +88,11 @@ namespace CodeWriter.ViewBinding.Editor
             }
             else
             {
-                if (valueProp.propertyType == SerializedPropertyType.String)
+                if (valueProp == null)
+                {
+                    EditorGUI.LabelField(valueRect, GUIContent.none, valueContent);
+                }
+                else if (valueProp.propertyType == SerializedPropertyType.String)
                 {
                     EditorGUI.DelayedTextField(valueRect, valueProp, valueContent);
                 }
