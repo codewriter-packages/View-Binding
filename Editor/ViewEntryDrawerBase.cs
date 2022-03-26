@@ -52,8 +52,14 @@ namespace CodeWriter.ViewBinding.Editor
             {
                 var matchedContexts = mb.GetComponentsInParent<ViewContextBase>();
 
-                foreach (var matchedContext in matchedContexts)
+                for (var contextIndex = 0; contextIndex < matchedContexts.Length; contextIndex++)
                 {
+                    if (contextIndex != 0)
+                    {
+                        menu.AddSeparator("");
+                    }
+
+                    var matchedContext = matchedContexts[contextIndex];
                     var matchedEntries = EnumerateEntries(matchedContext)
                         .Where(o => o != null && o.GetType() == fieldInfo.FieldType)
                         .ToList();
@@ -69,8 +75,6 @@ namespace CodeWriter.ViewBinding.Editor
                             nameProp.serializedObject.ApplyModifiedProperties();
                         });
                     }
-
-                    menu.AddSeparator("");
                 }
             }
             else
