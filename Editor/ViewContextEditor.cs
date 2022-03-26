@@ -49,10 +49,12 @@ namespace CodeWriter.ViewBinding.Editor
         {
             serializedObject.Update();
 
-            DoListenersGUI();
-
-            using (new EditorGUI.DisabledScope(Application.isPlaying))
+            var disabled = Application.isPlaying ||
+                           (EditorUtility.IsPersistent(serializedObject.targetObject));
+            using (new EditorGUI.DisabledScope(disabled))
             {
+                DoListenersGUI();
+
                 _variablesListDrawer.DoLayoutList();
                 _eventsListDrawer.DoLayoutList();
             }
@@ -98,7 +100,7 @@ namespace CodeWriter.ViewBinding.Editor
             {
                 FillListeners();
             }
-            
+
             EditorGUILayout.Space();
         }
 

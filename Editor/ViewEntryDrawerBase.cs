@@ -22,7 +22,9 @@ namespace CodeWriter.ViewBinding.Editor
 
             position = EditorGUI.PrefixLabel(position, label);
 
-            using (new EditorGUI.DisabledScope(Application.isPlaying))
+            var disabled = Application.isPlaying ||
+                           (EditorUtility.IsPersistent(property.serializedObject.targetObject));
+            using (new EditorGUI.DisabledScope(disabled))
             {
                 DrawContent(position, property);
             }
