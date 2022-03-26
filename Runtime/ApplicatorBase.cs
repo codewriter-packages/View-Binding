@@ -1,4 +1,5 @@
 using UniMob;
+using UnityEngine;
 
 namespace CodeWriter.ViewBinding
 {
@@ -7,22 +8,31 @@ namespace CodeWriter.ViewBinding
         , IEditorViewContextListener
 #endif
     {
-        private readonly LifetimeController _lifetimeController = new LifetimeController();
+        private LifetimeController _lifetimeController;
 
         public bool IsDestroyed => this == null;
 
-        protected override void Start()
+        public override void OnContextStart()
         {
-            base.Start();
+            base.OnContextStart();
 
-            Atom.Reaction(_lifetimeController.Lifetime, Apply, debugName: name);
+            if (_lifetimeController != null)
+            {
+                Debug.LogError($"OnContextStart called multiple times");
+            }
+            else
+            {
+                _lifetimeController = new LifetimeController();
+                Atom.Reaction(_lifetimeController.Lifetime, Apply, debugName: name);
+            }
         }
 
-        protected override void OnDestroy()
+        public override void OnContextDestroy()
         {
             _lifetimeController?.Dispose();
+            _lifetimeController = null;
 
-            base.OnDestroy();
+            base.OnContextDestroy();
         }
 
         protected abstract void Apply();

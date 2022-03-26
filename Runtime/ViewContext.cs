@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding
@@ -6,6 +7,9 @@ namespace CodeWriter.ViewBinding
     [AddComponentMenu("View Binding/View Context")]
     public class ViewContext : ViewContextBase
     {
+        [SerializeField]
+        private List<ViewBindingBehaviour> listeners = new List<ViewBindingBehaviour>();
+
         [SerializeReference]
         private List<ViewVariable> vars = new List<ViewVariable>();
 
@@ -17,6 +21,37 @@ namespace CodeWriter.ViewBinding
 
         protected internal override ViewVariable GetVariable(int index) => vars[index];
         protected internal override ViewEvent GetEvent(int index) => evts[index];
+
+        protected override void Start()
+        {
+            base.Start();
+
+            foreach (var listener in listeners)
+            {
+                if (listener == null)
+                {
+                    Debug.LogError($"Null listener at {name}");
+                    continue;
+                }
+
+                listener.OnContextStart();
+            }
+        }
+
+        protected override void OnDestroy()
+        {
+            foreach (var listener in listeners)
+            {
+                if (listener == null)
+                {
+                    continue;
+                }
+
+                listener.OnContextDestroy();
+            }
+
+            base.OnDestroy();
+        }
 
         protected void UnsafeRegisterVariable(ViewVariable variable)
         {
@@ -53,6 +88,18 @@ namespace CodeWriter.ViewBinding
             }
 
             return null;
+        }
+
+        public void FillListeners()
+        {
+            listeners = Enumerable.Empty<ViewBindingBehaviour>()
+                .Concat(gameObject.GetComponents<ViewBindingBehaviour>())
+                .Concat(gameObject.GetComponentsInChildren<ViewBindingBehaviour>(true))
+                .Where(it => it != null)
+                .Where(it => !(it is ViewContext))
+                .ToList();
+
+            listeners.RemoveAll(it => it.GetComponentInParent<ViewContext>() != this);
         }
     }
 }

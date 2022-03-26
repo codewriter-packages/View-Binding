@@ -11,11 +11,14 @@ namespace CodeWriter.ViewBinding.Editor
     [CustomEditor(typeof(ViewContext), true)]
     internal class ViewContextEditor : UnityEditor.Editor
     {
+        private const string ListenersFieldName = "listeners";
         private const string VariablesFieldName = "vars";
         private const string EventsFieldName = "evts";
         private const string NameFieldName = "name";
         private const string ContextFieldName = "context";
         private const string ValueFieldName = "value";
+
+        private SerializedProperty _listenersProp;
 
         private SerializedProperty _variablesProp;
         private ReorderableList _variablesListDrawer;
@@ -25,10 +28,12 @@ namespace CodeWriter.ViewBinding.Editor
         private ReorderableList _eventsListDrawer;
         private FieldInfo _eventsFieldInfo;
 
-        private ViewContextBase TargetContext => (ViewContextBase) target;
+        private ViewContext TargetContext => (ViewContext) target;
 
         private void OnEnable()
         {
+            _listenersProp = serializedObject.FindProperty(ListenersFieldName);
+
             _variablesProp = serializedObject.FindProperty(VariablesFieldName);
             _variablesFieldInfo =
                 ScriptAttributeUtilityProxy.GetFieldInfoAndStaticTypeFromProperty(_variablesProp, out _);
@@ -44,6 +49,8 @@ namespace CodeWriter.ViewBinding.Editor
         {
             serializedObject.Update();
 
+            DoListenersGUI();
+
             using (new EditorGUI.DisabledScope(Application.isPlaying))
             {
                 _variablesListDrawer.DoLayoutList();
@@ -51,6 +58,59 @@ namespace CodeWriter.ViewBinding.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private void DoListenersGUI()
+        {
+            var headerRect = GUILayoutUtility.GetRect(GUIContent.none, GUI.skin.label);
+            var headerLabelRect = new Rect(headerRect)
+            {
+                width = EditorGUIUtility.labelWidth
+            };
+            var headerContentRect = new Rect(headerRect)
+            {
+                xMin = headerLabelRect.xMax
+            };
+
+            using (new EditorGUI.DisabledScope(true))
+            {
+                EditorGUI.PropertyField(headerLabelRect, _listenersProp, false);
+
+                if (_listenersProp.isExpanded)
+                {
+                    EditorGUI.indentLevel++;
+
+                    for (int i = 0, len = _listenersProp.arraySize; i < len; i++)
+                    {
+                        EditorGUILayout.PropertyField(_listenersProp.GetArrayElementAtIndex(i));
+                    }
+
+                    if (_listenersProp.arraySize == 0)
+                    {
+                        GUILayout.Label("No listeners");
+                    }
+
+                    EditorGUI.indentLevel--;
+                }
+            }
+
+            if (GUI.Button(headerContentRect, "Fill Listeners"))
+            {
+                FillListeners();
+            }
+            
+            EditorGUILayout.Space();
+        }
+
+        private void FillListeners()
+        {
+            serializedObject.ApplyModifiedProperties();
+
+            var viewContext = (ViewContext) target;
+
+            viewContext.FillListeners();
+
+            EditorUtility.SetDirty(viewContext);
         }
 
         private T GetListElement<T>(FieldInfo fi, int index) => ((List<T>) fi.GetValue(target))[index];
