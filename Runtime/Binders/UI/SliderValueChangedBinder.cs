@@ -16,14 +16,18 @@ namespace CodeWriter.ViewBinding.Binders.UI
         [SerializeField]
         private ViewEventFloat onValueChanged;
 
-        private void OnEnable()
+        public override void OnContextStart()
         {
+            base.OnContextStart();
+
             slider.onValueChanged.AddListener(onValueChanged.Invoke);
         }
 
-        private void OnDisable()
+        public override void OnContextDestroy()
         {
             slider.onValueChanged.RemoveListener(onValueChanged.Invoke);
+
+            base.OnContextDestroy();
         }
 
 #if UNITY_EDITOR

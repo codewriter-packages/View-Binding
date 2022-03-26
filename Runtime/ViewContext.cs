@@ -22,10 +22,8 @@ namespace CodeWriter.ViewBinding
         protected internal override ViewVariable GetVariable(int index) => vars[index];
         protected internal override ViewEvent GetEvent(int index) => evts[index];
 
-        protected override void Start()
+        protected virtual void Start()
         {
-            base.Start();
-
             foreach (var listener in listeners)
             {
                 if (listener == null)
@@ -38,7 +36,7 @@ namespace CodeWriter.ViewBinding
             }
         }
 
-        protected override void OnDestroy()
+        protected virtual void OnDestroy()
         {
             foreach (var listener in listeners)
             {
@@ -49,8 +47,6 @@ namespace CodeWriter.ViewBinding
 
                 listener.OnContextDestroy();
             }
-
-            base.OnDestroy();
         }
 
         protected void UnsafeRegisterVariable(ViewVariable variable)

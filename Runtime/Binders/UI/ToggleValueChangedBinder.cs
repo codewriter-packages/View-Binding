@@ -16,14 +16,18 @@ namespace CodeWriter.ViewBinding.Binders.UI
         [SerializeField]
         private ViewEventBool onToggle;
 
-        private void OnEnable()
+        public override void OnContextStart()
         {
+            base.OnContextStart();
+
             toggle.onValueChanged.AddListener(onToggle.Invoke);
         }
 
-        private void OnDisable()
+        public override void OnContextDestroy()
         {
             toggle.onValueChanged.RemoveListener(onToggle.Invoke);
+
+            base.OnContextDestroy();
         }
 
 #if UNITY_EDITOR

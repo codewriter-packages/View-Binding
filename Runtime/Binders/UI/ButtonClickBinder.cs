@@ -16,14 +16,18 @@ namespace CodeWriter.ViewBinding.Binders.UI
         [SerializeField]
         private ViewEventVoid onClick;
 
-        private void OnEnable()
+        public override void OnContextStart()
         {
+            base.OnContextStart();
+
             button.onClick.AddListener(onClick.Invoke);
         }
 
-        private void OnDisable()
+        public override void OnContextDestroy()
         {
             button.onClick.RemoveListener(onClick.Invoke);
+
+            base.OnContextDestroy();
         }
 
 #if UNITY_EDITOR

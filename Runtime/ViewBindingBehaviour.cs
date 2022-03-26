@@ -4,14 +4,6 @@ namespace CodeWriter.ViewBinding
 {
     public abstract class ViewBindingBehaviour : MonoBehaviour
     {
-        protected virtual void Start()
-        {
-        }
-
-        protected virtual void OnDestroy()
-        {
-        }
-
         public virtual void OnContextStart()
         {
         }

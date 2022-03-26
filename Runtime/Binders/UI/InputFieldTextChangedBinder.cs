@@ -16,14 +16,18 @@ namespace CodeWriter.ViewBinding.Binders.UI
         [SerializeField]
         private ViewEventString onTextChanged;
 
-        private void OnEnable()
+        public override void OnContextStart()
         {
+            base.OnContextStart();
+
             inputField.onValueChanged.AddListener(onTextChanged.Invoke);
         }
 
-        private void OnDisable()
+        public override void OnContextDestroy()
         {
             inputField.onValueChanged.RemoveListener(onTextChanged.Invoke);
+
+            base.OnContextDestroy();
         }
 
 #if UNITY_EDITOR

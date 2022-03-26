@@ -31,18 +31,18 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         protected override ViewVariable GetVariable(int index) => result;
         protected override ViewEvent GetEvent(int index) => null;
 
-        protected override void Start()
+        public override void OnContextStart()
         {
-            base.Start();
+            base.OnContextStart();
 
             result.SetSource(Adapt);
         }
 
-        protected override void OnDestroy()
+        public override void OnContextDestroy()
         {
             result.SetSource(null);
 
-            base.OnDestroy();
+            base.OnContextDestroy();
         }
 
         private float Adapt()
