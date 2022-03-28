@@ -4,30 +4,28 @@ namespace CodeWriter.ViewBinding
 {
     public static class TextFormatUtility
     {
-        public static StringBuilder FormatText(string format,
+        public static void FormatText(StringBuilder output, string format,
             ViewContextBase context = null,
             ViewContextBase[] contexts = null)
         {
-            return FormatText(format, new ViewContextProxy
+            FormatText(output, format, new ViewContextProxy
             {
                 single = context,
                 array = contexts,
             });
         }
 
-        private static StringBuilder FormatText(string format, ViewContextProxy contexts)
+        private static void FormatText(StringBuilder output, string format, ViewContextProxy contexts)
         {
-            var sb = new StringBuilder();
-
             if (string.IsNullOrEmpty(format))
             {
-                return sb;
+                return;
             }
 
             int prev = 0, len = format.Length, start, end;
             while (prev < len && (start = format.IndexOf('<', prev)) != -1)
             {
-                sb.Append(format, prev, start - prev);
+                output.Append(format, prev, start - prev);
 
                 for (int contextIndex = 0, contextCount = contexts.Count; contextIndex < contextCount; contextIndex++)
                 {
@@ -47,14 +45,14 @@ namespace CodeWriter.ViewBinding
                             (format[end] == '>') &&
                             (string.Compare(format, start + 1, key, 0, key.Length) == 0))
                         {
-                            variable.AppendValueTo(ref sb);
+                            variable.AppendValueTo(ref output);
                             prev = end + 1;
                             goto replaced;
                         }
                     }
                 }
 
-                sb.Append('<');
+                output.Append('<');
                 prev = start + 1;
 
                 replaced: ;
@@ -62,10 +60,8 @@ namespace CodeWriter.ViewBinding
 
             if (prev < format.Length)
             {
-                sb.Append(format, prev, format.Length - prev);
+                output.Append(format, prev, format.Length - prev);
             }
-
-            return sb;
         }
 
         private struct ViewContextProxy
