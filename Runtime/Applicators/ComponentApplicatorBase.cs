@@ -15,6 +15,11 @@ namespace CodeWriter.ViewBinding.Applicators
         [SerializeField]
         private TVariable source;
 
+        public TTarget GetTarget()
+        {
+            return target;
+        }
+
         protected sealed override void Apply()
         {
             if (target == null)

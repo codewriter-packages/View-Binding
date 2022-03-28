@@ -8,6 +8,14 @@ namespace CodeWriter.ViewBinding
             ViewContextBase context = null,
             ViewContextBase[] contexts = null)
         {
+            output.Clear();
+
+            if ((context == null && contexts == null) || string.IsNullOrEmpty(format))
+            {
+                output.Append(format);
+                return;
+            }
+
             FormatText(output, format, new ViewContextProxy
             {
                 single = context,
@@ -17,11 +25,6 @@ namespace CodeWriter.ViewBinding
 
         private static void FormatText(StringBuilder output, string format, ViewContextProxy contexts)
         {
-            if (string.IsNullOrEmpty(format))
-            {
-                return;
-            }
-
             int prev = 0, len = format.Length, start, end;
             while (prev < len && (start = format.IndexOf('<', prev)) != -1)
             {

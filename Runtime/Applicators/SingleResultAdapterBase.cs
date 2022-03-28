@@ -7,7 +7,7 @@ namespace CodeWriter.ViewBinding.Applicators
 #if UNITY_EDITOR
         , IEditorViewContextListener
 #endif
-        where TResultVariable : ViewVariable<TResult, TResultVariable>
+        where TResultVariable : ViewVariable<TResult, TResultVariable>, new()
     {
         [SerializeField]
         [FormerlySerializedAs("resultName")]
@@ -48,8 +48,18 @@ namespace CodeWriter.ViewBinding.Applicators
         {
             base.OnValidate();
 
+            if (result == null)
+            {
+                result = new TResultVariable();
+            }
+
             result.SetContext(this);
             result.SetName(alias);
+
+            if (!Application.isPlaying)
+            {
+                result.SetValueEditorOnly(Adapt());
+            }
         }
 
         public void OnEditorContextVariableChanged(ViewVariable variable)

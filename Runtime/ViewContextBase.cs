@@ -9,6 +9,9 @@ namespace CodeWriter.ViewBinding
 #if UNITY_EDITOR
         [NonSerialized]
         private readonly List<IEditorViewContextListener> _editorListeners = new List<IEditorViewContextListener>();
+
+        [NonSerialized]
+        private bool _executingNotify;
 #endif
 
         protected internal abstract int VariablesCount { get; }
@@ -79,12 +82,22 @@ namespace CodeWriter.ViewBinding
                 return;
             }
 
+            if (_executingNotify)
+            {
+                Debug.LogError($"Cyclic variable dependency of {this}");
+                return;
+            }
+
             _editorListeners.RemoveAll(it => it.IsDestroyed);
+
+            _executingNotify = true;
 
             foreach (var listener in _editorListeners)
             {
                 listener.OnEditorContextVariableChanged(variable);
             }
+
+            _executingNotify = false;
         }
 #endif
     }
@@ -101,9 +114,39 @@ namespace CodeWriter.ViewBinding
     {
         public static void EditorTrackModificationsOf(this IEditorViewContextListener self, ViewVariable variable)
         {
-            if (self != null && variable != null && variable.Context != null)
+            if (self == null || variable == null || variable.Context == null)
             {
-                variable.Context.AddEditorListener(self);
+                return;
+            }
+
+            variable.Context.AddEditorListener(self);
+        }
+
+        public static void EditorTrackModificationsOf(this IEditorViewContextListener self, ViewContextBase context)
+        {
+            if (self == null || context == null)
+            {
+                return;
+            }
+
+            context.AddEditorListener(self);
+        }
+
+        public static void EditorTrackModificationsOf(this IEditorViewContextListener self, ViewContextBase[] contexts)
+        {
+            if (self == null || contexts == null)
+            {
+                return;
+            }
+
+            foreach (var context in contexts)
+            {
+                if (context == null)
+                {
+                    continue;
+                }
+
+                context.AddEditorListener(self);
             }
         }
     }
