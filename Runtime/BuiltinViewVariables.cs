@@ -19,7 +19,10 @@ namespace CodeWriter.ViewBinding
     {
         public override string TypeDisplayName => "Integer";
 
-        public override void AppendValueTo(ref StringBuilder builder) => builder.Append(Value);
+        public override void AppendValueTo(ref StringBuilder builder)
+        {
+            NonAllocFormatter.AppendInvariant(builder, Value);
+        }
     }
 
     [Serializable]
