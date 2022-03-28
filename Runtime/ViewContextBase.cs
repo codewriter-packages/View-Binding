@@ -59,7 +59,7 @@ namespace CodeWriter.ViewBinding
         }
 
 #if UNITY_EDITOR
-        public void AddEditorListener(IEditorViewContextListener listener)
+        internal void AddEditorListener(IEditorViewContextListener listener)
         {
             if (Application.isPlaying)
             {
@@ -95,6 +95,17 @@ namespace CodeWriter.ViewBinding
         bool IsDestroyed { get; }
 
         void OnEditorContextVariableChanged(ViewVariable variable);
+    }
+
+    public static class EditorViewContextListenerExtension
+    {
+        public static void EditorTrackModificationsOf(this IEditorViewContextListener self, ViewVariable variable)
+        {
+            if (self != null && variable != null && variable.Context != null)
+            {
+                variable.Context.AddEditorListener(self);
+            }
+        }
     }
 #endif
 }

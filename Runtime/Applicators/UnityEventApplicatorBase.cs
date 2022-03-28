@@ -25,7 +25,7 @@ namespace CodeWriter.ViewBinding.Applicators
         {
             base.OnValidate();
 
-            source.Context.AddEditorListener(this);
+            this.EditorTrackModificationsOf(source);
         }
 #endif
     }

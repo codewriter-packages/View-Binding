@@ -28,15 +28,8 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         {
             base.OnValidate();
 
-            if (numerator != null && numerator.Context != null)
-            {
-                numerator.Context.AddEditorListener(this);
-            }
-
-            if (denominator != null && denominator.Context != null)
-            {
-                denominator.Context.AddEditorListener(this);
-            }
+            this.EditorTrackModificationsOf(numerator);
+            this.EditorTrackModificationsOf(denominator);
         }
 #endif
     }

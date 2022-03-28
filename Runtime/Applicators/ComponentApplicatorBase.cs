@@ -58,10 +58,7 @@ namespace CodeWriter.ViewBinding.Applicators
                 target = GetComponent<TTarget>();
             }
 
-            if (source != null && source.Context != null)
-            {
-                source.Context.AddEditorListener(this);
-            }
+            this.EditorTrackModificationsOf(source);
         }
 
         protected override void Reset()

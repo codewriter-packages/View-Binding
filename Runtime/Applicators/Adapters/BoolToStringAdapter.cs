@@ -29,10 +29,7 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         {
             base.OnValidate();
 
-            if (source != null && source.Context != null)
-            {
-                source.Context.AddEditorListener(this);
-            }
+            this.EditorTrackModificationsOf(source);
         }
 #endif
     }
