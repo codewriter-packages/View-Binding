@@ -32,6 +32,10 @@ namespace CodeWriter.ViewBinding
                 for (int contextIndex = 0, contextCount = contexts.Count; contextIndex < contextCount; contextIndex++)
                 {
                     var context = contexts.Get(contextIndex);
+                    if (context == null)
+                    {
+                        continue;
+                    }
 
                     for (int varIndex = 0, varCount = context.VariablesCount; varIndex < varCount; varIndex++)
                     {
@@ -69,15 +73,10 @@ namespace CodeWriter.ViewBinding
             public ViewContextBase single;
             public ViewContextBase[] array;
 
-            public int Count => (single != null ? 1 : 0) + (array?.Length ?? 0);
+            public int Count => 1 + (array?.Length ?? 0);
 
             public ViewContextBase Get(int index)
             {
-                if (single == null)
-                {
-                    return array[index];
-                }
-
                 return index == 0 ? single : array[index - 1];
             }
         }
