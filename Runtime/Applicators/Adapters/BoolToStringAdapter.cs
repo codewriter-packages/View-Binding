@@ -1,17 +1,9 @@
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
 {
-    public class BoolToStringAdapter : ViewContextBase
-#if UNITY_EDITOR
-        , IEditorViewContextListener
-#endif
+    public class BoolToStringAdapter : SingleResultAdapterBase<string, ViewVariableString>
     {
-        [SerializeField]
-        [FormerlySerializedAs("resultName")]
-        private string alias = "Result";
-
         [Space]
         [SerializeField]
         private ViewVariableBool source;
@@ -22,35 +14,14 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         [SerializeField]
         private string falseString = "FALSE";
 
-        [SerializeField]
-        [HideInInspector]
-        private ViewVariableString result;
-
-        public bool IsDestroyed => this == null;
-
-        protected override int VariablesCount => 1;
-        protected override int EventCount => 0;
-
-        protected override ViewVariable GetVariable(int index) => result;
-        protected override ViewEvent GetEvent(int index) => null;
-
-        public override void OnContextStart()
-        {
-            base.OnContextStart();
-
-            result.SetSource(Adapt);
-        }
-
-        public override void OnContextDestroy()
-        {
-            result.SetSource(null);
-
-            base.OnContextDestroy();
-        }
-
-        private string Adapt()
+        protected override string Adapt()
         {
             return source.Value ? trueString : falseString;
+        }
+
+        protected override bool IsVariableUsed(ViewVariable variable)
+        {
+            return variable.IsRootVariableFor(source);
         }
 
 #if UNITY_EDITOR
@@ -61,18 +32,6 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
             if (source != null && source.Context != null)
             {
                 source.Context.AddEditorListener(this);
-            }
-
-            result.SetContext(this);
-            result.SetName(alias);
-        }
-
-        public void OnEditorContextVariableChanged(ViewVariable variable)
-        {
-            if (variable.IsRootVariableFor(source))
-            {
-                result.SetValueEditorOnly(Adapt());
-                NotifyEditorVariableChanged(result);
             }
         }
 #endif
