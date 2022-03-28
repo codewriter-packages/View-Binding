@@ -10,9 +10,11 @@ namespace CodeWriter.ViewBinding
         [SerializeField]
         private List<ViewBindingBehaviour> listeners = new List<ViewBindingBehaviour>();
 
+        [HideInInspector]
         [SerializeReference]
         private List<ViewVariable> vars = new List<ViewVariable>();
 
+        [HideInInspector]
         [SerializeReference]
         private List<ViewEvent> evts = new List<ViewEvent>();
 
