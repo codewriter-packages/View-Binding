@@ -89,7 +89,6 @@ namespace CodeWriter.ViewBinding
         public void FillListeners()
         {
             listeners = Enumerable.Empty<ViewBindingBehaviour>()
-                .Concat(gameObject.GetComponents<ViewBindingBehaviour>())
                 .Concat(gameObject.GetComponentsInChildren<ViewBindingBehaviour>(true))
                 .Where(it => it != null)
                 .Where(it => !(it is ViewContext))
