@@ -59,6 +59,15 @@ namespace CodeWriter.ViewBinding.Editor
                 _eventsListDrawer.DoLayoutList();
             }
 
+            if (Event.current.isKey && Event.current.keyCode == KeyCode.Escape)
+            {
+                _variablesListDrawer.ReleaseKeyboardFocus();
+                _eventsListDrawer.ReleaseKeyboardFocus();
+                _variablesListDrawer.index = -1;
+                _eventsListDrawer.index = -1;
+                Repaint();
+            }
+
             serializedObject.ApplyModifiedProperties();
         }
 
@@ -157,6 +166,14 @@ namespace CodeWriter.ViewBinding.Editor
                 else if (valueProp.propertyType == SerializedPropertyType.String)
                 {
                     EditorGUI.DelayedTextField(valueRect, valueProp, valueContent);
+                }
+                else if (valueProp.propertyType == SerializedPropertyType.Float)
+                {
+                    EditorGUI.DelayedFloatField(valueRect, valueProp, valueContent);
+                }
+                else if (valueProp.propertyType == SerializedPropertyType.Integer)
+                {
+                    EditorGUI.DelayedIntField(valueRect, valueProp, valueContent);
                 }
                 else
                 {
