@@ -11,6 +11,13 @@ namespace CodeWriter.ViewBinding.Applicators
         protected override void Apply(Transform target, ViewVariableBool source)
         {
             target.gameObject.SetActive(source.Value != inverse);
+
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                UnityEditor.EditorUtility.SetDirty(target);
+            }
+#endif
         }
     }
 }

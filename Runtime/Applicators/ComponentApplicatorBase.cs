@@ -29,6 +29,13 @@ namespace CodeWriter.ViewBinding.Applicators
             }
 
             Apply(target, source);
+
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                UnityEditor.EditorUtility.SetDirty(target);
+            }
+#endif
         }
 
         protected abstract void Apply(TTarget target, TVariable source);
