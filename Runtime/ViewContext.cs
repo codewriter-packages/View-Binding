@@ -19,6 +19,9 @@ namespace CodeWriter.ViewBinding
         [SerializeReference]
         private List<ViewEvent> evts = new List<ViewEvent>();
 
+        [SerializeField]
+        private bool renderOnStart = false;
+
         private LifetimeController _lifetimeController;
         private Atom<object> _render;
 
@@ -57,6 +60,17 @@ namespace CodeWriter.ViewBinding
 
                 return null;
             }, debugName: name, keepAlive: true);
+        }
+
+        protected virtual void Start()
+        {
+            if (renderOnStart)
+            {
+                using (Atom.NoWatch)
+                {
+                    Render();
+                }
+            }
         }
 
         protected virtual void OnDestroy()
