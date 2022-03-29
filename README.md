@@ -32,8 +32,6 @@ public class ViewBindingSample : MonoBehaviour
 
     public ViewEventVoid onClose;
 
-    private ViewState State { get; } = new ViewState();
-
     private void Start()
     {
         soundEnabled.SetValue(true);
