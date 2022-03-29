@@ -43,6 +43,21 @@ namespace CodeWriter.ViewBinding.Editor
             _eventsProp = serializedObject.FindProperty(EventsFieldName);
             _eventsFieldInfo = ScriptAttributeUtilityProxy.GetFieldInfoAndStaticTypeFromProperty(_eventsProp, out _);
             _eventsListDrawer = CreateEntryList<ViewEvent>(_eventsProp, "Events", DrawEvent, TargetContext);
+
+            _variablesListDrawer.drawHeaderCallback = rect =>
+            {
+                var labelRect = new Rect(rect) {xMax = rect.xMax - 80};
+                var applyRect = new Rect(rect) {xMin = labelRect.xMax};
+
+                GUI.Label(labelRect, "Variables");
+                if (GUI.Button(applyRect, "Apply All"))
+                {
+                    for (int i = 0, len = TargetContext.VariablesCount; i < len; i++)
+                    {
+                        TargetContext.NotifyEditorVariableChanged(TargetContext.GetVariable(i));
+                    }
+                }
+            };
         }
 
         public override void OnInspectorGUI()
