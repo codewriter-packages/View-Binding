@@ -52,6 +52,7 @@ namespace CodeWriter.ViewBinding.Editor
                 GUI.Label(labelRect, "Variables");
                 if (GUI.Button(applyRect, "Apply All"))
                 {
+                    TargetContext.FillListeners();
                     for (int i = 0, len = TargetContext.VariablesCount; i < len; i++)
                     {
                         TargetContext.NotifyEditorVariableChanged(TargetContext.GetVariable(i));
@@ -202,6 +203,7 @@ namespace CodeWriter.ViewBinding.Editor
             if (EditorGUI.EndChangeCheck())
             {
                 serializedObject.ApplyModifiedPropertiesWithoutUndo();
+                TargetContext.FillListeners();
                 TargetContext.NotifyEditorVariableChanged(variableInstance);
             }
         }

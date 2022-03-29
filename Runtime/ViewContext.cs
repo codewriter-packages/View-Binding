@@ -118,13 +118,12 @@ namespace CodeWriter.ViewBinding
 
         internal void FillListeners()
         {
-            listeners = Enumerable.Empty<ViewBindingBehaviour>()
-                .Concat(gameObject.GetComponentsInChildren<ViewBindingBehaviour>(true))
-                .Where(it => it != null)
-                .Where(it => !(it is ViewContext))
-                .ToList();
-
-            listeners.RemoveAll(it => it.GetComponentInParent<ViewContext>() != this);
+            listeners.Clear();
+            listeners.AddRange(gameObject.GetComponentsInChildren<ViewBindingBehaviour>(true));
+            listeners.RemoveAll(it =>
+                it == null ||
+                it is ViewContext ||
+                it.GetComponentInParent<ViewContext>() != this);
         }
     }
 }
