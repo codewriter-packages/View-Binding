@@ -2,6 +2,7 @@
 
 using System;
 using JetBrains.Annotations;
+using UniMob;
 using UniMob.UI;
 
 namespace CodeWriter.ViewBinding
@@ -14,8 +15,9 @@ namespace CodeWriter.ViewBinding
             where TState : class, IViewState
             where TVariable : ViewVariable<T, TVariable>
         {
-            var activation = new Action(() => variable.SetSource(f));
-            var deactivation = new Action(() => variable.SetSource(() => default));
+            var atom = Atom.Computed(it.ViewLifetime, f);
+            var activation = new Action(() => variable.SetSource(atom));
+            var deactivation = new Action(() => variable.SetSource(null));
 
             it.AddActivationCallback(activation);
             it.AddDeactivationCallback(deactivation);

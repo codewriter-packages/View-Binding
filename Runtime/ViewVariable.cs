@@ -13,7 +13,7 @@ namespace CodeWriter.ViewBinding
         private T value;
 
         [NonSerialized]
-        private MutableAtom<Func<T>> _atomSource = Atom.Value(default(Func<T>));
+        private MutableAtom<Atom<T>> _atomSource = Atom.Value(default(Atom<T>));
 
         public override string TypeDisplayName => typeof(T).Name;
 
@@ -40,11 +40,11 @@ namespace CodeWriter.ViewBinding
                     return value;
                 }
 
-                return _atomSource.Value.Invoke();
+                return _atomSource.Value.Value;
             }
         }
 
-        public void SetSource(Func<T> source)
+        public void SetSource(Atom<T> source)
         {
             if (Context.TryGetRootVariableFor<TVariable>(this, out var rootVariable))
             {
@@ -53,6 +53,29 @@ namespace CodeWriter.ViewBinding
             else
             {
                 _atomSource.Value = source;
+            }
+        }
+
+        public void SetValue(T newValue)
+        {
+            if (Context.TryGetRootVariableFor<TVariable>(this, out var rootVariable))
+            {
+                rootVariable.SetValue(newValue);
+            }
+            else
+            {
+                using (Atom.NoWatch)
+                {
+                    var oldSource = _atomSource.Value;
+                    if (oldSource is MutableAtom<T> oldMutableSource)
+                    {
+                        oldMutableSource.Value = newValue;
+                    }
+                    else
+                    {
+                        _atomSource.Value = Atom.Value(newValue);
+                    }
+                }
             }
         }
 

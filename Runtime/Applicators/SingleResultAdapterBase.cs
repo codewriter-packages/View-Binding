@@ -32,7 +32,7 @@ namespace CodeWriter.ViewBinding.Applicators
 
             if (!lifetime.IsDisposed)
             {
-                result.SetSource(Adapt);
+                result.SetSource(Atom.Computed(lifetime, Adapt));
                 lifetime.Register(() => result.SetSource(null));
             }
         }
