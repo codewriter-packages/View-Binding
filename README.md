@@ -6,19 +6,18 @@ _View binding library for unity_
 #### 1. Setup ViewContext
 ViewContext contains the data necessary to display current part of the interface.
 
-![View Context Preview](https://user-images.githubusercontent.com/26966368/120635821-8f571a00-c475-11eb-922e-2b69bce52b4e.png)
+![View Context Preview](https://user-images.githubusercontent.com/26966368/160635506-fadfab2c-e7b4-4fa5-b044-28aeff3f936d.png)
 
-#### 2. Add applicators
+#### 2. Add applicators and Binders
 
-Applicators reactively update components (Text, Slider, etc) when data changes in ViewContext.
+Applicators reactively update components (Text, Slider, etc) when data changes in ViewContext. 
+Binders subscribes to events and pass them to ViewContext.
 
-![Text Applicator Preview](https://user-images.githubusercontent.com/26966368/120635942-b281c980-c475-11eb-9c4c-91826b75fdbd.png)
+![Text Applicator Preview](https://user-images.githubusercontent.com/26966368/160635846-c5fcbf6f-633b-4eda-b14e-ac4783a07cf2.png)
 
-#### 3. Bind
+#### 3. Set values from code
 
-Finally, you need to bind the variable to any `[Atom]`. Applicators will automatically update every time the atom value changes.
-
-![Code Preview](https://user-images.githubusercontent.com/26966368/120636104-e6f58580-c475-11eb-9a63-bbc3534cc820.png)
+![Code Preview](https://user-images.githubusercontent.com/26966368/160636024-ee024ecf-98a3-4571-b29b-8638fb80e7d1.png)
 
 ```csharp
 using UniMob;
@@ -30,51 +29,21 @@ public class ViewBindingSample : MonoBehaviour
     public ViewVariableBool soundEnabled;
     public ViewVariableBool musicEnabled;
     public ViewVariableFloat volume;
+
     public ViewEventVoid onClose;
 
     private ViewState State { get; } = new ViewState();
 
     private void Start()
     {
-        soundEnabled.BindTo(() => State.SoundEnabled);
-        musicEnabled.BindTo(() => State.MusicEnabled);
-        volume.BindTo(() => State.Volume);
-        onClose.BindTo(() => State.Close);
-    }
-}
+        soundEnabled.SetValue(true);
+        soundEnabled.SetValue(false);
+        volume.SetValue(0.5f);
 
-public class ViewState
-{
-    [Atom] public bool SoundEnabled { get; set; }
-    [Atom] public bool MusicEnabled { get; set; }
-    [Atom] public float Volume { get; set; }
-    
-    public void Close()
-    {
-        Debug.Log("Close clicked");
+        onClose.AddListener(() => Debug.Log("Close clicked"));
     }
 }
 ```
-
-<details>
-  <summary>BindTo extensions</summary>
-
-```csharp
-public static class BindingExtension
-{
-    public static void BindTo<TVariable, T>(this TVariable variable, AtomPull<T> f)
-        where TVariable : ViewVariable<T, TVariable>
-    {
-        variable.SetSource(Atom.Computed(f));
-    }
-}
-
-public static void BindTo(this ViewEventVoid evt, Func<Action> f)
-{
-    evt.AddListener(() => f.Invoke()?.Invoke());
-}
-```
-</details>
 
 ## How to Install
 Minimal Unity Version is 2020.1.
