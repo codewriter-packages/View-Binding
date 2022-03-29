@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UniMob;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding
@@ -18,42 +19,69 @@ namespace CodeWriter.ViewBinding
         [SerializeReference]
         private List<ViewEvent> evts = new List<ViewEvent>();
 
+        private LifetimeController _lifetimeController;
+        private Atom<object> _render;
+
         protected internal override int VariablesCount => vars.Count;
         protected internal override int EventCount => evts.Count;
 
         protected internal override ViewVariable GetVariable(int index) => vars[index];
         protected internal override ViewEvent GetEvent(int index) => evts[index];
 
-        protected virtual void Start()
+        protected virtual void Awake()
         {
+            _lifetimeController?.Dispose();
+            _lifetimeController = new LifetimeController();
+
             foreach (var listener in listeners)
             {
                 if (listener == null)
                 {
-                    Debug.LogError($"Null listener at {name}");
                     continue;
                 }
 
-                listener.OnContextStart();
+                listener.Setup(_lifetimeController.Lifetime);
             }
+
+            _render = Atom.Computed<object>(_lifetimeController.Lifetime, () =>
+            {
+                foreach (var listener in listeners)
+                {
+                    if (listener == null)
+                    {
+                        continue;
+                    }
+
+                    listener.LinkToRender();
+                }
+
+                return null;
+            }, debugName: name, keepAlive: true);
         }
 
         protected virtual void OnDestroy()
         {
-            foreach (var listener in listeners)
-            {
-                if (listener == null)
-                {
-                    continue;
-                }
+            _render = null;
 
-                listener.OnContextDestroy();
-            }
+            _lifetimeController?.Dispose();
+            _lifetimeController = null;
+        }
+
+        protected internal override void LinkToRender()
+        {
+            base.LinkToRender();
+
+            _render.Get();
         }
 
         protected void UnsafeRegisterVariable(ViewVariable variable)
         {
             vars.Add(variable);
+        }
+
+        public void Render()
+        {
+            LinkToRender();
         }
 
         public ViewVariable FindVariable(string variableName) => FindVariable<ViewVariable>(variableName);
@@ -88,7 +116,7 @@ namespace CodeWriter.ViewBinding
             return null;
         }
 
-        public void FillListeners()
+        internal void FillListeners()
         {
             listeners = Enumerable.Empty<ViewBindingBehaviour>()
                 .Concat(gameObject.GetComponentsInChildren<ViewBindingBehaviour>(true))

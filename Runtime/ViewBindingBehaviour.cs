@@ -1,14 +1,15 @@
+using UniMob;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding
 {
     public abstract class ViewBindingBehaviour : MonoBehaviour
     {
-        public virtual void OnContextStart()
+        protected internal virtual void Setup(Lifetime lifetime)
         {
         }
 
-        public virtual void OnContextDestroy()
+        protected internal virtual void LinkToRender()
         {
         }
 

@@ -1,3 +1,4 @@
+using UniMob;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,18 +17,11 @@ namespace CodeWriter.ViewBinding.Binders.UI
         [SerializeField]
         private ViewEventFloat onValueChanged;
 
-        public override void OnContextStart()
+        protected internal override void Setup(Lifetime lifetime)
         {
-            base.OnContextStart();
+            base.Setup(lifetime);
 
-            slider.onValueChanged.AddListener(onValueChanged.Invoke);
-        }
-
-        public override void OnContextDestroy()
-        {
-            slider.onValueChanged.RemoveListener(onValueChanged.Invoke);
-
-            base.OnContextDestroy();
+            slider.onValueChanged.AddLifetimedListener(lifetime, onValueChanged.Invoke);
         }
 
 #if UNITY_EDITOR

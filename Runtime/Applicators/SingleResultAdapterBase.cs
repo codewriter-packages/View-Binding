@@ -1,3 +1,4 @@
+using UniMob;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -25,18 +26,15 @@ namespace CodeWriter.ViewBinding.Applicators
         protected override ViewVariable GetVariable(int index) => result;
         protected override ViewEvent GetEvent(int index) => null;
 
-        public override void OnContextStart()
+        protected override void Setup(Lifetime lifetime)
         {
-            base.OnContextStart();
+            base.Setup(lifetime);
 
-            result.SetSource(Adapt);
-        }
-
-        public override void OnContextDestroy()
-        {
-            result.SetSource(null);
-
-            base.OnContextDestroy();
+            if (!lifetime.IsDisposed)
+            {
+                result.SetSource(Adapt);
+                lifetime.Register(() => result.SetSource(null));
+            }
         }
 
         protected abstract TResult Adapt();

@@ -10,7 +10,7 @@ namespace CodeWriter.ViewBinding
     {
         [PublicAPI]
         public static void Bind<T, TVariable, TState>(this ViewVariable<T, TVariable> variable,
-            ViewBindable<TState> it, Func<T> f)
+            View<TState> it, Func<T> f)
             where TState : class, IViewState
             where TVariable : ViewVariable<T, TVariable>
         {
@@ -23,7 +23,7 @@ namespace CodeWriter.ViewBinding
 
         [PublicAPI]
         public static void Bind<T, TEvent, TState>(this ViewParametrizedEvent<T, TEvent> evt,
-            ViewBindable<TState> it, Action<T> f)
+            View<TState> it, Action<T> f)
             where TState : class, IViewState
             where TEvent : ViewParametrizedEvent<T, TEvent>
         {
@@ -36,7 +36,7 @@ namespace CodeWriter.ViewBinding
 
         [PublicAPI]
         public static void Bind<TState>(this ViewEventVoid evt,
-            ViewBindable<TState> it, Action f)
+            View<TState> it, Action f)
             where TState : class, IViewState
         {
             var activation = new Action(() => evt.AddListener(f));

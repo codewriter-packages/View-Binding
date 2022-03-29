@@ -1,3 +1,4 @@
+using UniMob;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,18 +17,11 @@ namespace CodeWriter.ViewBinding.Binders.UI
         [SerializeField]
         private ViewEventString onTextChanged;
 
-        public override void OnContextStart()
+        protected internal override void Setup(Lifetime lifetime)
         {
-            base.OnContextStart();
+            base.Setup(lifetime);
 
-            inputField.onValueChanged.AddListener(onTextChanged.Invoke);
-        }
-
-        public override void OnContextDestroy()
-        {
-            inputField.onValueChanged.RemoveListener(onTextChanged.Invoke);
-
-            base.OnContextDestroy();
+            inputField.onValueChanged.AddLifetimedListener(lifetime, onTextChanged.Invoke);
         }
 
 #if UNITY_EDITOR

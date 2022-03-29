@@ -1,3 +1,4 @@
+using UniMob;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,18 +17,11 @@ namespace CodeWriter.ViewBinding.Binders.UI
         [SerializeField]
         private ViewEventBool onToggle;
 
-        public override void OnContextStart()
+        protected internal override void Setup(Lifetime lifetime)
         {
-            base.OnContextStart();
+            base.Setup(lifetime);
 
-            toggle.onValueChanged.AddListener(onToggle.Invoke);
-        }
-
-        public override void OnContextDestroy()
-        {
-            toggle.onValueChanged.RemoveListener(onToggle.Invoke);
-
-            base.OnContextDestroy();
+            toggle.onValueChanged.AddLifetimedListener(lifetime, onToggle.Invoke);
         }
 
 #if UNITY_EDITOR

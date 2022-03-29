@@ -1,3 +1,4 @@
+using UniMob;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,18 +17,11 @@ namespace CodeWriter.ViewBinding.Binders.UI
         [SerializeField]
         private ViewEventVoid onClick;
 
-        public override void OnContextStart()
+        protected internal override void Setup(Lifetime lifetime)
         {
-            base.OnContextStart();
+            base.Setup(lifetime);
 
-            button.onClick.AddListener(onClick.Invoke);
-        }
-
-        public override void OnContextDestroy()
-        {
-            button.onClick.RemoveListener(onClick.Invoke);
-
-            base.OnContextDestroy();
+            button.onClick.AddLifetimedListener(lifetime, onClick.Invoke);
         }
 
 #if UNITY_EDITOR
