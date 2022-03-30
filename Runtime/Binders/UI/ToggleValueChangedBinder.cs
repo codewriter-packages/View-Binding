@@ -25,16 +25,6 @@ namespace CodeWriter.ViewBinding.Binders.UI
         }
 
 #if UNITY_EDITOR
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            if (toggle == null || toggle.gameObject != gameObject)
-            {
-                toggle = GetComponent<Toggle>();
-            }
-        }
-
         protected override void Reset()
         {
             base.Reset();

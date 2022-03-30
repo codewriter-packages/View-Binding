@@ -25,16 +25,6 @@ namespace CodeWriter.ViewBinding.Binders.UI
         }
 
 #if UNITY_EDITOR
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            if (button == null || button.gameObject != gameObject)
-            {
-                button = GetComponent<Button>();
-            }
-        }
-
         protected override void Reset()
         {
             base.Reset();

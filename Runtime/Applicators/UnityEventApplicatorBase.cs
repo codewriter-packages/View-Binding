@@ -11,22 +11,5 @@ namespace CodeWriter.ViewBinding.Applicators
 
         [SerializeField]
         protected internal UnityEvent<TValue> callback;
-
-#if UNITY_EDITOR
-        public sealed override void OnEditorContextVariableChanged(ViewVariable variable)
-        {
-            if (variable.IsRootVariableFor(source))
-            {
-                Apply();
-            }
-        }
-
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            this.EditorTrackModificationsOf(source);
-        }
-#endif
     }
 }

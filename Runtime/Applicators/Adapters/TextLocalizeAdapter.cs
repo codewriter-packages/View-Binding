@@ -25,19 +25,5 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
 
             return BindingsLocalization.Localize(_stringBuilder);
         }
-
-        protected override bool IsVariableUsed(ViewVariable variable)
-        {
-            return true;
-        }
-
-#if UNITY_EDITOR
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            this.EditorTrackModificationsOf(contexts);
-        }
-#endif
     }
 }

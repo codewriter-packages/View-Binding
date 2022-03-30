@@ -5,9 +5,6 @@ using UnityEngine.Serialization;
 namespace CodeWriter.ViewBinding.Applicators
 {
     public abstract class SingleResultAdapterBase<TResult, TResultVariable> : ViewContextBase
-#if UNITY_EDITOR
-        , IEditorViewContextListener
-#endif
         where TResultVariable : ViewVariable<TResult, TResultVariable>, new()
     {
         [SerializeField]
@@ -17,8 +14,6 @@ namespace CodeWriter.ViewBinding.Applicators
         [SerializeField]
         [HideInInspector]
         private TResultVariable result;
-
-        public bool IsDestroyed => this == null;
 
         protected override int VariablesCount => 1;
         protected override int EventCount => 0;
@@ -39,33 +34,20 @@ namespace CodeWriter.ViewBinding.Applicators
 
         protected abstract TResult Adapt();
 
-        protected abstract bool IsVariableUsed(ViewVariable variable);
-
 #if UNITY_EDITOR
         protected override void OnValidate()
         {
             base.OnValidate();
 
-            if (result == null)
+            if (result != null)
             {
-                result = new TResultVariable();
-            }
+                result.SetContext(this);
+                result.SetName(alias);
 
-            result.SetContext(this);
-            result.SetName(alias);
-
-            if (!Application.isPlaying)
-            {
-                result.SetValueEditorOnly(Adapt());
-            }
-        }
-
-        public void OnEditorContextVariableChanged(ViewVariable variable)
-        {
-            if (IsVariableUsed(variable))
-            {
-                result.SetValueEditorOnly(Adapt());
-                NotifyEditorVariableChanged(result);
+                if (!Application.isPlaying)
+                {
+                    result.SetValueEditorOnly(Adapt());
+                }
             }
         }
 #endif

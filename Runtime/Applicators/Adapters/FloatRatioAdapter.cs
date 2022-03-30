@@ -17,20 +17,5 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
                 ? 0f
                 : numerator.Value / denominator.Value;
         }
-
-        protected override bool IsVariableUsed(ViewVariable variable)
-        {
-            return variable.IsRootVariableFor(numerator) || variable.IsRootVariableFor(denominator);
-        }
-
-#if UNITY_EDITOR
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            this.EditorTrackModificationsOf(numerator);
-            this.EditorTrackModificationsOf(denominator);
-        }
-#endif
     }
 }

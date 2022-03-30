@@ -25,16 +25,6 @@ namespace CodeWriter.ViewBinding.Binders.UI
         }
 
 #if UNITY_EDITOR
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            if (slider == null || slider.gameObject != gameObject)
-            {
-                slider = GetComponent<Slider>();
-            }
-        }
-
         protected override void Reset()
         {
             base.Reset();

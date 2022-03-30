@@ -18,19 +18,5 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         {
             return source.Value ? trueString : falseString;
         }
-
-        protected override bool IsVariableUsed(ViewVariable variable)
-        {
-            return variable.IsRootVariableFor(source);
-        }
-
-#if UNITY_EDITOR
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            this.EditorTrackModificationsOf(source);
-        }
-#endif
     }
 }

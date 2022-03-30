@@ -46,26 +46,6 @@ namespace CodeWriter.ViewBinding.Applicators
         protected abstract void Apply(TTarget target, TVariable source);
 
 #if UNITY_EDITOR
-        public override void OnEditorContextVariableChanged(ViewVariable variable)
-        {
-            if (variable.IsRootVariableFor(source))
-            {
-                Apply();
-            }
-        }
-
-        protected override void OnValidate()
-        {
-            base.OnValidate();
-
-            if (target == null || target.gameObject != gameObject)
-            {
-                target = GetComponent<TTarget>();
-            }
-
-            this.EditorTrackModificationsOf(source);
-        }
-
         protected override void Reset()
         {
             base.Reset();
