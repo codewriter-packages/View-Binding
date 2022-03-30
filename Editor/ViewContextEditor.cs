@@ -311,6 +311,8 @@ namespace CodeWriter.ViewBinding.Editor
 
         private void ApplyApplicators()
         {
+            serializedObject.ApplyModifiedProperties();
+            
             TargetContext.FillListeners();
 
             foreach (var listener in TargetContext.Listeners)

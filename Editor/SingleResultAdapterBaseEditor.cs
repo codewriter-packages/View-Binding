@@ -1,4 +1,3 @@
-using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -28,9 +27,13 @@ namespace CodeWriter.ViewBinding.Editor
 
         public override void OnInspectorGUI()
         {
+            serializedObject.Update();
+
             EditorGUILayout.PropertyField(_resultNameProp, AliasContent);
 
             DrawPropertiesExcluding(serializedObject, ExcludedProps);
+
+            serializedObject.ApplyModifiedProperties();
         }
     }
 }
