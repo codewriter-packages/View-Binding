@@ -20,14 +20,14 @@ namespace CodeWriter.ViewBinding
         protected internal abstract ViewVariable GetVariable(int index);
         protected internal abstract ViewEvent GetEvent(int index);
 
-        internal bool TryGetRootVariableFor<TVariable>(ViewVariable variable, out TVariable rootVariable)
+        internal bool TryGetRootVariableFor<TVariable>(ViewVariable variable, out TVariable rootVariable, bool selfIsOk = false)
             where TVariable : ViewVariable
         {
             for (int index = 0, count = VariablesCount; index < count; index++)
             {
                 var other = GetVariable(index);
 
-                if (other != variable &&
+                if ((selfIsOk || other != variable) &&
                     other.Type == variable.Type &&
                     other.Name == variable.Name &&
                     other is TVariable tOther)
@@ -41,16 +41,16 @@ namespace CodeWriter.ViewBinding
             return false;
         }
 
-        internal bool TryGetRootEventFor<TEvent>(ViewEvent evt, out TEvent rootEvent)
+        internal bool TryGetRootEventFor<TEvent>(ViewEvent evt, out TEvent rootEvent, bool selfIsOk = false)
         {
             for (int index = 0, count = EventCount; index < count; index++)
             {
                 var other = GetEvent(index);
 
-                if (other != evt &&
-                    other.Type == evt.Type &&
-                    other.Name == evt.Name &&
-                    other is TEvent tOther)
+                if ((selfIsOk || other != evt) &&
+                     other.Type == evt.Type &&
+                     other.Name == evt.Name &&
+                     other is TEvent tOther)
                 {
                     rootEvent = tOther;
                     return true;

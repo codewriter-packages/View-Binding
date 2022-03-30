@@ -30,7 +30,7 @@ namespace CodeWriter.ViewBinding
                 return error;
             }
 
-            if (!Context.TryGetRootEventFor<ViewEvent>(this, out _))
+            if (!Context.TryGetRootEventFor<ViewEvent>(this, out _, selfIsOk: true))
             {
                 return "Event is missing";
             }

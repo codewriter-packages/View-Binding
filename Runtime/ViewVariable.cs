@@ -108,7 +108,7 @@ namespace CodeWriter.ViewBinding
                 return error;
             }
 
-            if (!Context.TryGetRootVariableFor<ViewVariable>(this, out _))
+            if (!Context.TryGetRootVariableFor<ViewVariable>(this, out _, selfIsOk: true))
             {
                 return "Variable is missing";
             }
