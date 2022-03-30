@@ -1,8 +1,8 @@
 {
     "name": "CodeWriter.ViewBinding",
     "references": [
-        "GUID:f7da7540d2396044e940a9d258e05b05",
-        "GUID:5669d3edc250faf4b86ef506155e1ed5"
+        "UniMob",
+        "UniMob.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
