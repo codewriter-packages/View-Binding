@@ -6,7 +6,7 @@ _View binding library for unity_
 #### 1. Setup ViewContext
 ViewContext contains the data necessary to display current part of the interface.
 
-![View Context Preview](https://user-images.githubusercontent.com/26966368/160635506-fadfab2c-e7b4-4fa5-b044-28aeff3f936d.png)
+![View Context Preview](https://user-images.githubusercontent.com/26966368/160893683-222809f4-8753-41ca-967e-78864f4c75e6.png)
 
 #### 2. Add applicators and Binders
 
