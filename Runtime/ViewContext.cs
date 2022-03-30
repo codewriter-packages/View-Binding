@@ -24,6 +24,8 @@ namespace CodeWriter.ViewBinding
 
         private LifetimeController _lifetimeController;
         private Atom<object> _render;
+        
+        internal List<ViewBindingBehaviour> Listeners => listeners;
 
         protected internal override int VariablesCount => vars.Count;
         protected internal override int EventCount => evts.Count;

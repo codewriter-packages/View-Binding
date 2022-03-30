@@ -31,6 +31,11 @@ namespace CodeWriter.ViewBinding
 #if UNITY_EDITOR
                 if (!Application.isPlaying)
                 {
+                    if (Context is AdapterBase adapter)
+                    {
+                        adapter.AdaptEditorOnly();
+                    }
+                    
                     return value;
                 }
 #endif

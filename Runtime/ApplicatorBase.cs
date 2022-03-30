@@ -24,6 +24,6 @@ namespace CodeWriter.ViewBinding
             _render.Get();
         }
 
-        protected abstract void Apply();
+        protected internal abstract void Apply();
     }
 }

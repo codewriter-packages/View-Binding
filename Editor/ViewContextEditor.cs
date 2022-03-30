@@ -47,21 +47,7 @@ namespace CodeWriter.ViewBinding.Editor
             _eventsFieldInfo = ScriptAttributeUtilityProxy.GetFieldInfoAndStaticTypeFromProperty(_eventsProp, out _);
             _eventsListDrawer = CreateEntryList<ViewEvent>(_eventsProp, "Events", DrawEvent, TargetContext);
 
-            //_variablesListDrawer.drawHeaderCallback = rect =>
-            //{
-            //    var labelRect = new Rect(rect) {xMax = rect.xMax - 80};
-            //    var applyRect = new Rect(rect) {xMin = labelRect.xMax};
-            //
-            //    GUI.Label(labelRect, "Variables");
-            //    if (GUI.Button(applyRect, "Apply All"))
-            //    {
-            //        TargetContext.FillListeners();
-            //        for (int i = 0, len = TargetContext.VariablesCount; i < len; i++)
-            //        {
-            //            TargetContext.NotifyEditorVariableChanged(TargetContext.GetVariable(i));
-            //        }
-            //    }
-            //};
+            _variablesListDrawer.drawHeaderCallback = DoVariablesHeader;
         }
 
         public override void OnInspectorGUI()
@@ -90,6 +76,18 @@ namespace CodeWriter.ViewBinding.Editor
             }
 
             serializedObject.ApplyModifiedProperties();
+        }
+
+        private void DoVariablesHeader(Rect rect)
+        {
+            var labelRect = new Rect(rect) {xMax = rect.xMax - 80};
+            var applyRect = new Rect(rect) {xMin = labelRect.xMax};
+
+            GUI.Label(labelRect, "Variables");
+            if (GUI.Button(applyRect, "Apply"))
+            {
+                ApplyApplicators();
+            }
         }
 
         private void DoListenersGUI()
@@ -207,9 +205,7 @@ namespace CodeWriter.ViewBinding.Editor
 
             if (EditorGUI.EndChangeCheck())
             {
-                serializedObject.ApplyModifiedPropertiesWithoutUndo();
-                TargetContext.FillListeners();
-                //TargetContext.NotifyEditorVariableChanged(variableInstance);
+                ApplyApplicators();
             }
         }
 
@@ -311,6 +307,19 @@ namespace CodeWriter.ViewBinding.Editor
             }
 
             menu.ShowAsContext();
+        }
+
+        private void ApplyApplicators()
+        {
+            TargetContext.FillListeners();
+
+            foreach (var listener in TargetContext.Listeners)
+            {
+                if (listener is ApplicatorBase applicator)
+                {
+                    applicator.Apply();
+                }
+            }
         }
 
         private static IEnumerable<Type> EnumerateTypes<TBase>()
