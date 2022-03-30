@@ -184,7 +184,19 @@ namespace CodeWriter.ViewBinding.Editor
                 }
                 else if (valueProp.propertyType == SerializedPropertyType.String)
                 {
-                    EditorGUI.DelayedTextField(valueRect, valueProp, valueContent);
+                    if (EnumVariableUtils.TryGetEnumValues(nameProp.stringValue, out var enumValues))
+                    {
+                        var selected = Array.IndexOf(enumValues, valueProp.stringValue);
+                        var newSelected = EditorGUI.Popup(valueRect, valueContent.text, selected, enumValues);
+                        if (newSelected != selected && newSelected != -1)
+                        {
+                            valueProp.stringValue = enumValues[newSelected];
+                        }
+                    }
+                    else
+                    {
+                        EditorGUI.DelayedTextField(valueRect, valueProp, valueContent);
+                    }
                 }
                 else if (valueProp.propertyType == SerializedPropertyType.Float)
                 {
@@ -312,7 +324,7 @@ namespace CodeWriter.ViewBinding.Editor
         private void ApplyApplicators()
         {
             serializedObject.ApplyModifiedProperties();
-            
+
             TargetContext.FillListeners();
 
             foreach (var listener in TargetContext.Listeners)
