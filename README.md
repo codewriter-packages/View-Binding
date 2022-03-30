@@ -43,6 +43,42 @@ public class ViewBindingSample : MonoBehaviour
 }
 ```
 
+## Documentation
+
+#### Builtin variable types:
+- Boolean (ViewVariableBool)
+- Integer (ViewVariableInt)
+- Float (ViewVariableFloat)
+- String (ViewVariableString)
+
+#### Builtin event types:
+- Void (ViewEventVoid)
+- Boolean (ViewEventBool)
+- Integer (ViewEventInt)
+- Float (ViewEventFloat)
+- String (ViewEventString)
+
+#### Builtin applicators:
+- UnityEvent ([Bool](./Runtime/Applicators/UnityEvent/UnityEventBoolApplicator.cs), [Float](./Runtime/Applicators/UnityEvent/UnityEventFloatApplicator.cs), [Integer](./Runtime/Applicators/UnityEvent/UnityEventIntApplicator.cs), [String](./Runtime/Applicators/UnityEvent/UnityEventStringApplicator.cs))
+- [GameObject - Activity](./Runtime/Applicators/GameObjectActivityApplicator.cs)
+- [UI Button - Interactable](./Runtime/Applicators/UI/ButtonInteractableApplicator.cs)
+- [UI InputField - Text](./Runtime/Applicators/UI/InputFieldApplicator.cs)
+- [UI Slider - Value](./Runtime/Applicators/UI/SliderValueApplicator.cs)
+- [UI Text - Text](./Runtime/Applicators/UI/TextApplicator.cs)
+- [UI Toggle - IsOn](./Runtime/Applicators/UI/ToggleApplicator.cs)
+
+#### Builtin adapters:
+- [Bool To String](./Runtime/Applicators/Adapters/BoolToStringAdapter.cs)
+- [Float Ratio](./Runtime/Applicators/Adapters/FloatRatioAdapter.cs)
+- [Text Localize](./Runtime/Applicators/Adapters/TextLocalizeAdapter.cs)
+
+#### Builtin binders:
+- [UI Button - Click](./Runtime/Binders/UI/ButtonClickBinder.cs)
+- [UI Toggle - ValueChanged](./Runtime/Binders/UI/ToggleValueChangedBinder.cs)
+- [UI Slider - ValueChanged](./Runtime/Binders/UI/SliderValueChangedBinder.cs)
+- [UI InputField - TextChanged](./Runtime/Binders/UI/InputFieldTextChangedBinder.cs)
+- [UI InputField - EndEdit](./Runtime/Binders/UI/InputFieldEndEditBinder.cs)
+
 ## How to Install
 Minimal Unity Version is 2020.1.
 
