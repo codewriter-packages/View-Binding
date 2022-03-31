@@ -68,6 +68,8 @@ public class ViewBindingSample : MonoBehaviour
 - [UI Toggle - IsOn](./Runtime/Applicators/UI/ToggleApplicator.cs)
 
 #### Builtin adapters:
+- [Inverse Boolean](./Runtime/Applicators/Adapters/InverseBoolAdapter.cs)
+- [Compare String](./Runtime/Applicators/Adapters/CompareStringAdapter.cs)
 - [Bool To String](./Runtime/Applicators/Adapters/BoolToStringAdapter.cs)
 - [Float Ratio](./Runtime/Applicators/Adapters/FloatRatioAdapter.cs)
 - [Text Localize](./Runtime/Applicators/Adapters/TextLocalizeAdapter.cs)
