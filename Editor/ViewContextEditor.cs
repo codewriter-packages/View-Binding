@@ -303,7 +303,7 @@ namespace CodeWriter.ViewBinding.Editor
         {
             var menu = new GenericMenu();
 
-            foreach (var type in EnumerateTypes<TBase>())
+            foreach (var type in EnumerateViewEntryTypes<TBase>())
             {
                 var instance = (ViewEntry) Activator.CreateInstance(type);
 
@@ -336,12 +336,17 @@ namespace CodeWriter.ViewBinding.Editor
             }
         }
 
-        private static IEnumerable<Type> EnumerateTypes<TBase>()
+        private static IEnumerable<Type> EnumerateViewEntryTypes<TBase>()
+            where TBase : ViewEntry
         {
+            var origin = typeof(ViewVariableBool);
+
             return AppDomain.CurrentDomain
                 .GetAssemblies()
                 .SelectMany(asm => asm.GetTypes())
-                .Where(type => typeof(TBase).IsAssignableFrom(type) && !type.IsAbstract);
+                .Where(type => typeof(TBase).IsAssignableFrom(type) && !type.IsAbstract)
+                .Where(type => type.Assembly == origin.Assembly && type.Namespace == origin.Namespace)
+                .OrderBy(type => type.Name);
         }
     }
 }
