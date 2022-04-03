@@ -62,6 +62,7 @@ public class ViewBindingSample : MonoBehaviour
 - UnityEvent ([Bool](./Runtime/Applicators/UnityEvent/UnityEventBoolApplicator.cs), [Float](./Runtime/Applicators/UnityEvent/UnityEventFloatApplicator.cs), [Integer](./Runtime/Applicators/UnityEvent/UnityEventIntApplicator.cs), [String](./Runtime/Applicators/UnityEvent/UnityEventStringApplicator.cs))
 - [GameObject - Activity](./Runtime/Applicators/GameObjectActivityApplicator.cs)
 - [UI Button - Interactable](./Runtime/Applicators/UI/ButtonInteractableApplicator.cs)
+- [UI Image - Fill Amount](./Runtime/Applicators/UI/ImageFillAmountApplicator.cs)
 - [UI InputField - Text](./Runtime/Applicators/UI/InputFieldApplicator.cs)
 - [UI Slider - Value](./Runtime/Applicators/UI/SliderValueApplicator.cs)
 - [UI Text - Text](./Runtime/Applicators/UI/TextApplicator.cs)
