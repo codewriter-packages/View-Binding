@@ -12,15 +12,21 @@ namespace CodeWriter.ViewBinding.Editor
     internal class ViewContextEditor : UnityEditor.Editor
     {
         private const string ListenersFieldName = "listeners";
-        private const string RenderOnStartFieldName = "renderOnStart";
         private const string VariablesFieldName = "vars";
         private const string EventsFieldName = "evts";
         private const string NameFieldName = "name";
         private const string ContextFieldName = "context";
         private const string ValueFieldName = "value";
 
+        private static readonly string[] ExcludedProps =
+        {
+            "m_Script",
+            ListenersFieldName,
+            VariablesFieldName,
+            EventsFieldName
+        };
+
         private SerializedProperty _listenersProp;
-        private SerializedProperty _renderOnStartProp;
 
         private SerializedProperty _variablesProp;
         private ReorderableList _variablesListDrawer;
@@ -35,7 +41,6 @@ namespace CodeWriter.ViewBinding.Editor
         private void OnEnable()
         {
             _listenersProp = serializedObject.FindProperty(ListenersFieldName);
-            _renderOnStartProp = serializedObject.FindProperty(RenderOnStartFieldName);
 
             _variablesProp = serializedObject.FindProperty(VariablesFieldName);
             _variablesFieldInfo =
@@ -62,8 +67,8 @@ namespace CodeWriter.ViewBinding.Editor
 
                 _variablesListDrawer.DoLayoutList();
                 _eventsListDrawer.DoLayoutList();
-
-                EditorGUILayout.PropertyField(_renderOnStartProp);
+                
+                DrawPropertiesExcluding(serializedObject, ExcludedProps);
             }
 
             if (Event.current.isKey && Event.current.keyCode == KeyCode.Escape)
