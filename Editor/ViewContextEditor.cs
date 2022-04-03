@@ -344,13 +344,10 @@ namespace CodeWriter.ViewBinding.Editor
         private static IEnumerable<Type> EnumerateViewEntryTypes<TBase>()
             where TBase : ViewEntry
         {
-            var origin = typeof(ViewVariableBool);
-
             return AppDomain.CurrentDomain
                 .GetAssemblies()
                 .SelectMany(asm => asm.GetTypes())
                 .Where(type => typeof(TBase).IsAssignableFrom(type) && !type.IsAbstract)
-                .Where(type => type.Assembly == origin.Assembly && type.Namespace == origin.Namespace)
                 .OrderBy(type => type.Name);
         }
     }
