@@ -59,11 +59,6 @@ namespace CodeWriter.ViewBinding.Editor
 
                 for (var contextIndex = 0; contextIndex < matchedContexts.Count; contextIndex++)
                 {
-                    if (contextIndex != 0)
-                    {
-                        menu.AddSeparator("");
-                    }
-
                     var matchedContext = matchedContexts[contextIndex];
                     var matchedEntries = EnumerateEntries(matchedContext)
                         .Where(o => o != null && o.GetType() == fieldInfo.FieldType)
