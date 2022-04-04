@@ -9,7 +9,7 @@ namespace CodeWriter.ViewBinding.Applicators
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.Required]
 #endif
-        [SerializeField, HideInInspector]
+        [SerializeField]
         private TTarget target;
 
         [SerializeField]
