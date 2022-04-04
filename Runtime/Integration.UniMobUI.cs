@@ -21,6 +21,14 @@ namespace CodeWriter.ViewBinding
 
             it.AddActivationCallback(activation);
             it.AddDeactivationCallback(deactivation);
+
+            if (it.HasState)
+            {
+                using (Atom.NoWatch)
+                {
+                    activation.Invoke();                    
+                }
+            }
         }
 
         [PublicAPI]
@@ -34,6 +42,14 @@ namespace CodeWriter.ViewBinding
 
             it.AddActivationCallback(activation);
             it.AddDeactivationCallback(deactivation);
+
+            if (it.HasState)
+            {
+                using (Atom.NoWatch)
+                {
+                    activation.Invoke();                    
+                }
+            }
         }
 
         [PublicAPI]
@@ -46,6 +62,14 @@ namespace CodeWriter.ViewBinding
 
             it.AddActivationCallback(activation);
             it.AddDeactivationCallback(deactivation);
+
+            if (it.HasState)
+            {
+                using (Atom.NoWatch)
+                {
+                    activation.Invoke();                    
+                }
+            }
         }
     }
 }

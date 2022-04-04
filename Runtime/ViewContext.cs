@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using UniMob;
 using UnityEngine;
 
@@ -22,7 +21,7 @@ namespace CodeWriter.ViewBinding
 
         private LifetimeController _lifetimeController;
         private Atom<object> _render;
-        
+
         internal List<ViewBindingBehaviour> Listeners => listeners;
 
         protected internal override int VariablesCount => vars.Count;
@@ -30,37 +29,6 @@ namespace CodeWriter.ViewBinding
 
         protected internal override ViewVariable GetVariable(int index) => vars[index];
         protected internal override ViewEvent GetEvent(int index) => evts[index];
-
-        protected virtual void Awake()
-        {
-            _lifetimeController?.Dispose();
-            _lifetimeController = new LifetimeController();
-
-            foreach (var listener in listeners)
-            {
-                if (listener == null)
-                {
-                    continue;
-                }
-
-                listener.Setup(_lifetimeController.Lifetime);
-            }
-
-            _render = Atom.Computed<object>(_lifetimeController.Lifetime, () =>
-            {
-                foreach (var listener in listeners)
-                {
-                    if (listener == null)
-                    {
-                        continue;
-                    }
-
-                    listener.LinkToRender();
-                }
-
-                return null;
-            }, debugName: name, keepAlive: true);
-        }
 
         protected virtual void Start()
         {
@@ -81,6 +49,44 @@ namespace CodeWriter.ViewBinding
             _lifetimeController = null;
         }
 
+        private void InitIfNeed()
+        {
+            if (_lifetimeController != null)
+            {
+                return;
+            }
+
+            using (Atom.NoWatch)
+            {
+                _lifetimeController = new LifetimeController();
+
+                foreach (var listener in listeners)
+                {
+                    if (listener == null)
+                    {
+                        continue;
+                    }
+
+                    listener.Setup(_lifetimeController.Lifetime);
+                }
+
+                _render = Atom.Computed<object>(_lifetimeController.Lifetime, () =>
+                {
+                    foreach (var listener in listeners)
+                    {
+                        if (listener == null)
+                        {
+                            continue;
+                        }
+
+                        listener.LinkToRender();
+                    }
+
+                    return null;
+                }, debugName: name, keepAlive: true);
+            }
+        }
+
         protected internal override void LinkToRender()
         {
             base.LinkToRender();
@@ -95,6 +101,7 @@ namespace CodeWriter.ViewBinding
 
         public void Render()
         {
+            InitIfNeed();
             LinkToRender();
         }
 
