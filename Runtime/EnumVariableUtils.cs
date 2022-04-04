@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CodeWriter.ViewBinding.Editor
+namespace CodeWriter.ViewBinding
 {
     internal static class EnumVariableUtils
     {

@@ -187,33 +187,9 @@ namespace CodeWriter.ViewBinding.Editor
                 {
                     EditorGUI.LabelField(valueRect, GUIContent.none, valueContent);
                 }
-                else if (valueProp.propertyType == SerializedPropertyType.String)
-                {
-                    if (EnumVariableUtils.TryGetEnumValues(nameProp.stringValue, out var enumValues))
-                    {
-                        var selected = Array.IndexOf(enumValues, valueProp.stringValue);
-                        var newSelected = EditorGUI.Popup(valueRect, valueContent.text, selected, enumValues);
-                        if (newSelected != selected && newSelected != -1)
-                        {
-                            valueProp.stringValue = enumValues[newSelected];
-                        }
-                    }
-                    else
-                    {
-                        EditorGUI.DelayedTextField(valueRect, valueProp, valueContent);
-                    }
-                }
-                else if (valueProp.propertyType == SerializedPropertyType.Float)
-                {
-                    EditorGUI.DelayedFloatField(valueRect, valueProp, valueContent);
-                }
-                else if (valueProp.propertyType == SerializedPropertyType.Integer)
-                {
-                    EditorGUI.DelayedIntField(valueRect, valueProp, valueContent);
-                }
                 else
                 {
-                    EditorGUI.PropertyField(valueRect, valueProp, valueContent);
+                    variableInstance.DoGUI(valueRect, valueContent, valueProp, nameProp.stringValue);
                 }
             }
 

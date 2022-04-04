@@ -1,5 +1,6 @@
 using System;
 using System.Text;
+using UnityEngine;
 
 namespace CodeWriter.ViewBinding
 {
@@ -12,6 +13,14 @@ namespace CodeWriter.ViewBinding
         {
             builder.Append(Value ? "yes" : "no");
         }
+        
+#if UNITY_EDITOR
+        public override void DoGUI(Rect position, GUIContent label, 
+            UnityEditor.SerializedProperty property, string variableName)
+        {
+            property.boolValue = UnityEditor.EditorGUI.Toggle(position, label, property.boolValue);
+        }
+#endif
     }
 
     [Serializable]
@@ -23,6 +32,14 @@ namespace CodeWriter.ViewBinding
         {
             NonAllocFormatter.AppendInvariant(builder, Value);
         }
+        
+#if UNITY_EDITOR
+        public override void DoGUI(Rect position, GUIContent label, 
+            UnityEditor.SerializedProperty property, string variableName)
+        {
+            UnityEditor.EditorGUI.DelayedIntField(position, property, label);
+        }
+#endif
     }
 
     [Serializable]
@@ -31,6 +48,14 @@ namespace CodeWriter.ViewBinding
         public override string TypeDisplayName => "Float";
 
         public override void AppendValueTo(ref StringBuilder builder) => builder.Append(Value);
+        
+#if UNITY_EDITOR
+        public override void DoGUI(Rect position, GUIContent label, 
+            UnityEditor.SerializedProperty property, string variableName)
+        {
+            property.floatValue = UnityEditor.EditorGUI.FloatField(position, label, property.floatValue);
+        }
+#endif
     }
 
     [Serializable]
@@ -38,5 +63,25 @@ namespace CodeWriter.ViewBinding
     {
         public override string TypeDisplayName => "String";
         public override void AppendValueTo(ref StringBuilder builder) => builder.Append(Value);
+        
+#if UNITY_EDITOR
+        public override void DoGUI(Rect position, GUIContent label, 
+            UnityEditor.SerializedProperty property, string variableName)
+        {
+            if (EnumVariableUtils.TryGetEnumValues(variableName, out var enumValues))
+            {
+                var selected = Array.IndexOf(enumValues, property.stringValue);
+                var newSelected = UnityEditor.EditorGUI.Popup(position, label.text, selected, enumValues);
+                if (newSelected != selected && newSelected != -1)
+                {
+                    property.stringValue = enumValues[newSelected];
+                }
+            }
+            else
+            {
+                UnityEditor.EditorGUI.DelayedTextField(position, property, label);
+            }
+        }
+#endif
     }
 }

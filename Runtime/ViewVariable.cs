@@ -13,7 +13,7 @@ namespace CodeWriter.ViewBinding
         private T value;
 
         [NonSerialized]
-        private MutableAtom<Atom<T>> _atomSource = Atom.Value(default(Atom<T>));
+        private MutableAtom<Atom<T>> _atomSource = Atom.Value(default(Atom<T>), debugName: "_atomSource");
 
         public override string TypeDisplayName => typeof(T).Name;
 
@@ -104,6 +104,11 @@ namespace CodeWriter.ViewBinding
         public abstract void AppendValueTo(ref StringBuilder builder);
 
         public abstract bool IsRootVariableFor(ViewVariable viewVariable);
+
+#if UNITY_EDITOR
+        public abstract void DoGUI(Rect position, GUIContent label,
+            UnityEditor.SerializedProperty property, string variableName);
+#endif
 
         internal override string GetErrorMessage()
         {
