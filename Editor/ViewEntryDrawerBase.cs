@@ -53,7 +53,7 @@ namespace CodeWriter.ViewBinding.Editor
             if (selfProp.serializedObject.targetObject is MonoBehaviour mb)
             {
                 var matchedContexts = Enumerable.Empty<ViewContextBase>()
-                    .Concat(mb.GetComponentsInParent<ViewContextBase>())
+                    .Concat(mb.GetComponentsInParent<ViewContextBase>(true))
                     .Where(it => it != null && it != mb)
                     .ToList();
 
