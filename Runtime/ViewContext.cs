@@ -105,38 +105,6 @@ namespace CodeWriter.ViewBinding
             LinkToRender();
         }
 
-        public ViewVariable FindVariable(string variableName) => FindVariable<ViewVariable>(variableName);
-
-        public TViewVariable FindVariable<TViewVariable>(string variableName)
-            where TViewVariable : ViewVariable
-        {
-            foreach (var variable in vars)
-            {
-                if (variable.Name == variableName && variable is TViewVariable tVariable)
-                {
-                    return tVariable;
-                }
-            }
-
-            return null;
-        }
-
-        public ViewEvent FindEvent(string eventName) => FindEvent<ViewEvent>(eventName);
-
-        public TViewEvent FindEvent<TViewEvent>(string eventName)
-            where TViewEvent : ViewEvent
-        {
-            foreach (var evt in evts)
-            {
-                if (evt.Name == eventName && evt is TViewEvent tVariable)
-                {
-                    return tVariable;
-                }
-            }
-
-            return null;
-        }
-
         internal void FillListeners()
         {
             listeners.Clear();
