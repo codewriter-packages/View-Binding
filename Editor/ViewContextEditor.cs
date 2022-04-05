@@ -243,14 +243,15 @@ namespace CodeWriter.ViewBinding.Editor
                 var nameStyle = nameFocused ? EditorStyles.textField : EditorStyles.label;
 
                 GUI.SetNextControlName(key + index);
-                var newName = GUI.TextField(nameRect, nameProp.stringValue, nameStyle);
+                var newName = EditorGUI.DelayedTextField(nameRect, nameProp.stringValue, nameStyle);
                 if (newName != nameProp.stringValue)
                 {
                     nameProp.stringValue = newName;
                 }
 
                 var isEnterPressed = Event.current.isKey && Event.current.keyCode == KeyCode.Return;
-                if (isEnterPressed)
+                var isEscapePressed = Event.current.isKey && Event.current.keyCode == KeyCode.Escape;
+                if (isEnterPressed || isEscapePressed)
                 {
                     Event.current.Use();
                     GUI.FocusControl(null);
