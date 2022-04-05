@@ -107,6 +107,8 @@ namespace CodeWriter.ViewBinding
 #if UNITY_EDITOR
         public abstract void DoGUI(Rect position, GUIContent label,
             UnityEditor.SerializedProperty property, string variableName);
+
+        public abstract void DoRuntimeGUI(Rect position, GUIContent label, string variableName);
 #endif
 
         internal override string GetErrorMessage()

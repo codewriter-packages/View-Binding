@@ -19,6 +19,11 @@ namespace CodeWriter.ViewBinding
         {
             property.boolValue = UnityEditor.EditorGUI.Toggle(position, label, property.boolValue);
         }
+
+        public override void DoRuntimeGUI(Rect position, GUIContent label, string variableName)
+        {
+            UnityEditor.EditorGUI.Toggle(position, label, Value);
+        }
 #endif
     }
 
@@ -38,6 +43,11 @@ namespace CodeWriter.ViewBinding
         {
             UnityEditor.EditorGUI.DelayedIntField(position, property, label);
         }
+
+        public override void DoRuntimeGUI(Rect position, GUIContent label, string variableName)
+        {
+            UnityEditor.EditorGUI.IntField(position, label, Value, GUI.skin.label);
+        }
 #endif
     }
 
@@ -55,13 +65,12 @@ namespace CodeWriter.ViewBinding
         public override void DoGUI(Rect position, GUIContent label,
             UnityEditor.SerializedProperty property, string variableName)
         {
-            if (variableName.IndexOf("[0..1]", StringComparison.Ordinal) != -1)
-            {
-                UnityEditor.EditorGUI.Slider(position, property, 0, 1, label);
-                return;
-            }
-            
             property.floatValue = UnityEditor.EditorGUI.FloatField(position, label, property.floatValue);
+        }
+
+        public override void DoRuntimeGUI(Rect position, GUIContent label, string variableName)
+        {
+            UnityEditor.EditorGUI.FloatField(position, label, Value, GUI.skin.label);
         }
 #endif
     }
@@ -93,6 +102,11 @@ namespace CodeWriter.ViewBinding
             {
                 UnityEditor.EditorGUI.DelayedTextField(position, property, label);
             }
+        }
+
+        public override void DoRuntimeGUI(Rect position, GUIContent label, string variableName)
+        {
+            UnityEditor.EditorGUI.LabelField(position, label.text, Value);
         }
 #endif
     }

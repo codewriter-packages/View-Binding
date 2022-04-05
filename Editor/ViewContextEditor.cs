@@ -55,6 +55,16 @@ namespace CodeWriter.ViewBinding.Editor
             _variablesListDrawer.drawHeaderCallback = DoVariablesHeader;
         }
 
+        public override bool RequiresConstantRepaint()
+        {
+            if (Application.isPlaying && ViewContextMenu.ShowRuntimeValues)
+            {
+                return true;
+            }
+
+            return base.RequiresConstantRepaint();
+        }
+
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
@@ -67,7 +77,7 @@ namespace CodeWriter.ViewBinding.Editor
 
                 _variablesListDrawer.DoLayoutList();
                 _eventsListDrawer.DoLayoutList();
-                
+
                 DrawPropertiesExcluding(serializedObject, ExcludedProps);
             }
 
@@ -179,7 +189,14 @@ namespace CodeWriter.ViewBinding.Editor
 
             if (Application.isPlaying)
             {
-                EditorGUI.LabelField(valueRect, valueContent, GUIContent.none);
+                if (ViewContextMenu.ShowRuntimeValues)
+                {
+                    variableInstance.DoRuntimeGUI(valueRect, valueContent, nameProp.stringValue);
+                }
+                else
+                {
+                    EditorGUI.LabelField(valueRect, valueContent, GUIContent.none);
+                }
             }
             else
             {

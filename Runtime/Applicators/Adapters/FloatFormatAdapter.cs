@@ -29,6 +29,11 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
             {
                 property.floatValue = UnityEditor.EditorGUI.FloatField(position, label, property.floatValue);
             }
+
+            public override void DoRuntimeGUI(Rect position, GUIContent label, string variableName)
+            {
+                UnityEditor.EditorGUI.FloatField(position, label, Value, GUI.skin.label);
+            }
 #endif
         }
 
