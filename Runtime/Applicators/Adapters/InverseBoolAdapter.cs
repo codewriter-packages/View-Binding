@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
 {
+    [AddComponentMenu("View Binding/Adapters/Bool Inverse")]
     public class InverseBoolAdapter : SingleResultAdapterBase<bool, ViewVariableBool>
     {
         [Space]

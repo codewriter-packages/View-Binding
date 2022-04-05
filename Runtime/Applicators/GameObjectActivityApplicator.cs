@@ -3,7 +3,7 @@ using UnityEngine;
 namespace CodeWriter.ViewBinding.Applicators
 {
     [RequireComponent(typeof(Transform))]
-    [AddComponentMenu("View Binding/GameObject Activity Applicator")]
+    [AddComponentMenu("View Binding/GameObject Activity")]
     public sealed class GameObjectActivityApplicator : ComponentApplicatorBase<Transform, ViewVariableBool>
     {
         [SerializeField] private bool inverse;

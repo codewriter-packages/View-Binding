@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
 {
+    [AddComponentMenu("View Binding/Adapters/String Compare")]
     public class CompareStringAdapter : SingleResultAdapterBase<bool, ViewVariableBool>
     {
         [Space]

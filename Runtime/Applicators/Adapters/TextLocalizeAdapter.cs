@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
 {
+    [AddComponentMenu("View Binding/Adapters/Text Localize")]
     public class TextLocalizeAdapter : SingleResultAdapterBase<string, ViewVariableString>
     {
         [Space]
