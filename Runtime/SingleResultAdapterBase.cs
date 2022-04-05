@@ -34,7 +34,9 @@ namespace CodeWriter.ViewBinding
         {
             base.AdaptEditorOnly();
 
+#if UNITY_EDITOR
             result.SetValueEditorOnly(Adapt());
+#endif
         }
 
         protected abstract TResult Adapt();
