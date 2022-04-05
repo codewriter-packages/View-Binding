@@ -1,7 +1,8 @@
 {
     "name": "CodeWriter.ViewBinding.Editor",
     "references": [
-        "CodeWriter.ViewBinding"
+        "CodeWriter.ViewBinding",
+        "CodeWriter.ViewBinding.Applicators"
     ],
     "includePlatforms": [
         "Editor"

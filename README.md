@@ -74,6 +74,7 @@ public class ViewBindingSample : MonoBehaviour
 - [Bool To String](./Runtime/Applicators/Adapters/BoolToStringAdapter.cs)
 - [Float Ratio](./Runtime/Applicators/Adapters/FloatRatioAdapter.cs)
 - [Text Localize](./Runtime/Applicators/Adapters/TextLocalizeAdapter.cs)
+- [Float Format](./Runtime/Applicators/Adapters/FloatFormatAdapter.cs)
 
 #### Builtin binders:
 - [UI Button - Click](./Runtime/Binders/UI/ButtonClickBinder.cs)

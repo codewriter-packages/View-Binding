@@ -19,21 +19,26 @@ namespace CodeWriter.ViewBinding.Editor
         private SerializedProperty _resultProp;
         private SerializedProperty _resultNameProp;
 
-        private void OnEnable()
+        public virtual void OnEnable()
         {
             _resultProp = serializedObject.FindProperty(ResultFieldName);
             _resultNameProp = _resultProp.FindPropertyRelative("name");
         }
 
-        public override void OnInspectorGUI()
+        public sealed override void OnInspectorGUI()
         {
             serializedObject.Update();
 
+            DoGUI();
+
+            serializedObject.ApplyModifiedProperties();
+        }
+
+        protected virtual void DoGUI()
+        {
             EditorGUILayout.PropertyField(_resultNameProp, AliasContent);
 
             DrawPropertiesExcluding(serializedObject, ExcludedProps);
-
-            serializedObject.ApplyModifiedProperties();
         }
     }
 }
