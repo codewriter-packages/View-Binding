@@ -2,7 +2,7 @@ namespace CodeWriter.ViewBinding
 {
     public ref partial struct ValueTextBuilder
     {
-        public void Append(float value, int precision = 9)
+        public void Append(float value, int precision = 9, bool fixedPrecision = false)
         {
             if (value < 0)
             {
@@ -31,7 +31,7 @@ namespace CodeWriter.ViewBinding
                         Append((char) (d + '0'));
                         valueD -= d;
 
-                        if (valueD == 0)
+                        if (valueD == 0 && !fixedPrecision)
                         {
                             p = precision;
                         }
