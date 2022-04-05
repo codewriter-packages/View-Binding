@@ -1,29 +1,25 @@
-using System.Text;
-
 namespace CodeWriter.ViewBinding
 {
     public static class TextFormatUtility
     {
-        public static void FormatText(StringBuilder output, string format,
+        public static void FormatText(ref ValueTextBuilder output, string format,
             ViewContextBase context = null,
             ViewContextBase[] contexts = null)
         {
-            output.Clear();
-
             if ((context == null && contexts == null) || string.IsNullOrEmpty(format))
             {
                 output.Append(format);
                 return;
             }
 
-            FormatText(output, format, new ViewContextProxy
+            FormatText(ref output, format, new ViewContextProxy
             {
                 single = context,
                 array = contexts,
             });
         }
 
-        private static void FormatText(StringBuilder output, string format, ViewContextProxy contexts)
+        private static void FormatText(ref ValueTextBuilder output, string format, ViewContextProxy contexts)
         {
             int prev = 0, len = format.Length, start, end;
             while (prev < len && (start = format.IndexOf('<', prev)) != -1)

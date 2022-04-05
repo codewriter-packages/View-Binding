@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding
@@ -9,13 +8,13 @@ namespace CodeWriter.ViewBinding
     {
         public override string TypeDisplayName => "Boolean";
 
-        public override void AppendValueTo(ref StringBuilder builder)
+        public override void AppendValueTo(ref ValueTextBuilder builder)
         {
             builder.Append(Value ? "yes" : "no");
         }
-        
+
 #if UNITY_EDITOR
-        public override void DoGUI(Rect position, GUIContent label, 
+        public override void DoGUI(Rect position, GUIContent label,
             UnityEditor.SerializedProperty property, string variableName)
         {
             property.boolValue = UnityEditor.EditorGUI.Toggle(position, label, property.boolValue);
@@ -28,13 +27,13 @@ namespace CodeWriter.ViewBinding
     {
         public override string TypeDisplayName => "Integer";
 
-        public override void AppendValueTo(ref StringBuilder builder)
+        public override void AppendValueTo(ref ValueTextBuilder builder)
         {
-            NonAllocFormatter.AppendInvariant(builder, Value);
+            builder.Append(Value);
         }
-        
+
 #if UNITY_EDITOR
-        public override void DoGUI(Rect position, GUIContent label, 
+        public override void DoGUI(Rect position, GUIContent label,
             UnityEditor.SerializedProperty property, string variableName)
         {
             UnityEditor.EditorGUI.DelayedIntField(position, property, label);
@@ -47,10 +46,13 @@ namespace CodeWriter.ViewBinding
     {
         public override string TypeDisplayName => "Float";
 
-        public override void AppendValueTo(ref StringBuilder builder) => builder.Append(Value);
-        
+        public override void AppendValueTo(ref ValueTextBuilder builder)
+        {
+            builder.Append(Value);
+        }
+
 #if UNITY_EDITOR
-        public override void DoGUI(Rect position, GUIContent label, 
+        public override void DoGUI(Rect position, GUIContent label,
             UnityEditor.SerializedProperty property, string variableName)
         {
             property.floatValue = UnityEditor.EditorGUI.FloatField(position, label, property.floatValue);
@@ -62,10 +64,14 @@ namespace CodeWriter.ViewBinding
     public sealed class ViewVariableString : ViewVariable<string, ViewVariableString>
     {
         public override string TypeDisplayName => "String";
-        public override void AppendValueTo(ref StringBuilder builder) => builder.Append(Value);
-        
+
+        public override void AppendValueTo(ref ValueTextBuilder builder)
+        {
+            builder.Append(Value);
+        }
+
 #if UNITY_EDITOR
-        public override void DoGUI(Rect position, GUIContent label, 
+        public override void DoGUI(Rect position, GUIContent label,
             UnityEditor.SerializedProperty property, string variableName)
         {
             if (EnumVariableUtils.TryGetEnumValues(variableName, out var enumValues))

@@ -1,5 +1,4 @@
 using System;
-using System.Text;
 using UniMob;
 using UnityEngine;
 
@@ -101,7 +100,7 @@ namespace CodeWriter.ViewBinding
     [Serializable]
     public abstract class ViewVariable : ViewEntry
     {
-        public abstract void AppendValueTo(ref StringBuilder builder);
+        public abstract void AppendValueTo(ref ValueTextBuilder builder);
 
         public abstract bool IsRootVariableFor(ViewVariable viewVariable);
 

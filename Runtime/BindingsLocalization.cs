@@ -1,28 +1,27 @@
-using System;
-using System.Text;
-
 namespace CodeWriter.ViewBinding
 {
+    public delegate string LocalizationCallback(ref ValueTextBuilder textBuilder);
+
     public class BindingsLocalization
     {
-        private static readonly Func<StringBuilder, string> DefaultCallback;
+        private static readonly LocalizationCallback DefaultCallback;
 
-        private static Func<StringBuilder, string> _callback;
+        private static LocalizationCallback _callback;
 
         static BindingsLocalization()
         {
-            DefaultCallback = sb => sb.ToString();
+            DefaultCallback = (ref ValueTextBuilder textBuilder) => textBuilder.ToString();
             _callback = DefaultCallback;
         }
 
-        public static void SetCallback(Func<StringBuilder, string> callback)
+        public static void SetCallback(LocalizationCallback callback)
         {
             _callback = callback ?? DefaultCallback;
         }
 
-        public static string Localize(StringBuilder stringBuilder)
+        public static string Localize(ref ValueTextBuilder textBuilder)
         {
-            return _callback.Invoke(stringBuilder);
+            return _callback.Invoke(ref textBuilder);
         }
     }
 }

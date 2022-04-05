@@ -1,4 +1,3 @@
-using System.Text;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
@@ -12,18 +11,18 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         [SerializeField]
         private ViewContextBase[] contexts = null;
 
-        private StringBuilder _stringBuilder;
-
         protected override string Adapt()
         {
-            if (_stringBuilder == null)
+            var textBuilder = new ValueTextBuilder(ValueTextBuilder.DefaultCapacity);
+            try
             {
-                _stringBuilder = new StringBuilder();
+                TextFormatUtility.FormatText(ref textBuilder, format, null, contexts);
+                return BindingsLocalization.Localize(ref textBuilder);
             }
-
-            TextFormatUtility.FormatText(_stringBuilder, format, null, contexts);
-
-            return BindingsLocalization.Localize(_stringBuilder);
+            finally
+            {
+                textBuilder.Dispose();
+            }
         }
     }
 }
