@@ -55,6 +55,12 @@ namespace CodeWriter.ViewBinding
         public override void DoGUI(Rect position, GUIContent label,
             UnityEditor.SerializedProperty property, string variableName)
         {
+            if (variableName.IndexOf("[0..1]", StringComparison.Ordinal) != -1)
+            {
+                UnityEditor.EditorGUI.Slider(position, property, 0, 1, label);
+                return;
+            }
+            
             property.floatValue = UnityEditor.EditorGUI.FloatField(position, label, property.floatValue);
         }
 #endif
