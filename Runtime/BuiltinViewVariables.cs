@@ -1,12 +1,18 @@
 using System;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 namespace CodeWriter.ViewBinding
 {
-    [Serializable]
+    [Serializable, Preserve]
     public sealed class ViewVariableBool : ViewVariable<bool, ViewVariableBool>
     {
         public override string TypeDisplayName => "Boolean";
+
+        [Preserve]
+        public ViewVariableBool()
+        {
+        }
 
         public override void AppendValueTo(ref ValueTextBuilder builder)
         {
@@ -27,10 +33,15 @@ namespace CodeWriter.ViewBinding
 #endif
     }
 
-    [Serializable]
+    [Serializable, Preserve]
     public sealed class ViewVariableInt : ViewVariable<int, ViewVariableInt>
     {
         public override string TypeDisplayName => "Integer";
+
+        [Preserve]
+        public ViewVariableInt()
+        {
+        }
 
         public override void AppendValueTo(ref ValueTextBuilder builder)
         {
@@ -51,10 +62,15 @@ namespace CodeWriter.ViewBinding
 #endif
     }
 
-    [Serializable]
+    [Serializable, Preserve]
     public sealed class ViewVariableFloat : ViewVariable<float, ViewVariableFloat>
     {
         public override string TypeDisplayName => "Float";
+
+        [Preserve]
+        public ViewVariableFloat()
+        {
+        }
 
         public override void AppendValueTo(ref ValueTextBuilder builder)
         {
@@ -75,10 +91,15 @@ namespace CodeWriter.ViewBinding
 #endif
     }
 
-    [Serializable]
+    [Serializable, Preserve]
     public sealed class ViewVariableString : ViewVariable<string, ViewVariableString>
     {
         public override string TypeDisplayName => "String";
+
+        [Preserve]
+        public ViewVariableString()
+        {
+        }
 
         public override void AppendValueTo(ref ValueTextBuilder builder)
         {

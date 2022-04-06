@@ -12,7 +12,20 @@ namespace CodeWriter.ViewBinding
         private T value;
 
         [NonSerialized]
-        private MutableAtom<Atom<T>> _atomSource = Atom.Value(default(Atom<T>), debugName: "_atomSource");
+        private MutableAtom<Atom<T>> _atomSourceBacking;
+
+        private MutableAtom<Atom<T>> AtomSource
+        {
+            get
+            {
+                if (_atomSourceBacking == null)
+                {
+                    _atomSourceBacking = Atom.Value(default(Atom<T>), debugName: "_atomSource");
+                }
+
+                return _atomSourceBacking;
+            }
+        }
 
         public override string TypeDisplayName => typeof(T).Name;
 
@@ -39,12 +52,12 @@ namespace CodeWriter.ViewBinding
                 }
 #endif
 
-                if (_atomSource.Value == null)
+                if (AtomSource.Value == null)
                 {
                     return value;
                 }
 
-                return _atomSource.Value.Value;
+                return AtomSource.Value.Value;
             }
         }
 
@@ -56,7 +69,7 @@ namespace CodeWriter.ViewBinding
             }
             else
             {
-                _atomSource.Value = source;
+                AtomSource.Value = source;
             }
         }
 
@@ -70,14 +83,14 @@ namespace CodeWriter.ViewBinding
             {
                 using (Atom.NoWatch)
                 {
-                    var oldSource = _atomSource.Value;
+                    var oldSource = AtomSource.Value;
                     if (oldSource is MutableAtom<T> oldMutableSource)
                     {
                         oldMutableSource.Value = newValue;
                     }
                     else
                     {
-                        _atomSource.Value = Atom.Value(newValue);
+                        AtomSource.Value = Atom.Value(newValue);
                     }
                 }
             }

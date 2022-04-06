@@ -1,5 +1,6 @@
 using UniMob;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 namespace CodeWriter.ViewBinding
 {
@@ -7,11 +8,17 @@ namespace CodeWriter.ViewBinding
     {
     }
 
+    [Preserve]
     public abstract class SingleResultAdapterBase<TResult, TResultVariable> : SingleResultAdapterBase
         where TResultVariable : ViewVariable<TResult, TResultVariable>, new()
     {
         [SerializeField]
         private TResultVariable result;
+
+        [Preserve]
+        public SingleResultAdapterBase()
+        {
+        }
 
         protected internal sealed override int VariablesCount => 1;
         protected internal sealed override int EventCount => 0;
