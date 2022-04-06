@@ -1,14 +1,20 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine.Scripting;
 
 namespace CodeWriter.ViewBinding
 {
-    [Serializable]
+    [Serializable, Preserve]
     public sealed class ViewEventVoid : ViewEvent<ViewEventVoid.Void, ViewEventVoid>
     {
-        private List<Action> _listeners = new List<Action>();
+        private List<Action> _listeners;
 
         public override string TypeDisplayName => "Void";
+
+        [Preserve]
+        public ViewEventVoid()
+        {
+        }
 
         public void AddListener(Action listener)
         {
@@ -16,6 +22,11 @@ namespace CodeWriter.ViewBinding
             {
                 rootEvent.AddListener(listener);
                 return;
+            }
+
+            if (_listeners == null)
+            {
+                _listeners = new List<Action>();
             }
 
             if (_listeners.Contains(listener))
@@ -34,7 +45,7 @@ namespace CodeWriter.ViewBinding
                 return;
             }
 
-            _listeners.Remove(listener);
+            _listeners?.Remove(listener);
         }
 
         public void Invoke()
@@ -42,6 +53,11 @@ namespace CodeWriter.ViewBinding
             if (Context.TryGetRootEventFor<ViewEventVoid>(this, out var rootEvent))
             {
                 rootEvent.Invoke();
+                return;
+            }
+
+            if (_listeners == null)
+            {
                 return;
             }
 
@@ -59,28 +75,48 @@ namespace CodeWriter.ViewBinding
         }
     }
 
-    [Serializable]
+    [Serializable, Preserve]
     public sealed class ViewEventBool : ViewParametrizedEvent<bool, ViewEventBool>
     {
         public override string TypeDisplayName => "Boolean";
+
+        [Preserve]
+        public ViewEventBool()
+        {
+        }
     }
 
-    [Serializable]
+    [Serializable, Preserve]
     public sealed class ViewEventInt : ViewParametrizedEvent<int, ViewEventInt>
     {
         public override string TypeDisplayName => "Integer";
+
+        [Preserve]
+        public ViewEventInt()
+        {
+        }
     }
 
-    [Serializable]
+    [Serializable, Preserve]
     public sealed class ViewEventFloat : ViewParametrizedEvent<float, ViewEventFloat>
     {
         public override string TypeDisplayName => "Float";
+
+        [Preserve]
+        public ViewEventFloat()
+        {
+        }
     }
 
-    [Serializable]
+    [Serializable, Preserve]
     public sealed class ViewEventString : ViewParametrizedEvent<string, ViewEventString>
     {
         public override string TypeDisplayName => "String";
+
+        [Preserve]
+        public ViewEventString()
+        {
+        }
     }
 
     [Serializable]
@@ -88,7 +124,7 @@ namespace CodeWriter.ViewBinding
         where TEvent : ViewParametrizedEvent<T, TEvent>
 
     {
-        private List<Action<T>> _listeners = new List<Action<T>>();
+        private List<Action<T>> _listeners;
 
         public void AddListener(Action<T> listener)
         {
@@ -96,6 +132,11 @@ namespace CodeWriter.ViewBinding
             {
                 rootEvent.AddListener(listener);
                 return;
+            }
+
+            if (_listeners == null)
+            {
+                _listeners = new List<Action<T>>();
             }
 
             if (_listeners.Contains(listener))
@@ -114,7 +155,7 @@ namespace CodeWriter.ViewBinding
                 return;
             }
 
-            _listeners.Remove(listener);
+            _listeners?.Remove(listener);
         }
 
         public void Invoke(T value)
@@ -122,6 +163,11 @@ namespace CodeWriter.ViewBinding
             if (Context.TryGetRootEventFor<TEvent>(this, out var rootEvent))
             {
                 rootEvent.Invoke(value);
+                return;
+            }
+
+            if (_listeners == null)
+            {
                 return;
             }
 
