@@ -19,7 +19,7 @@ namespace CodeWriter.ViewBinding
             {
                 valueD -= integer;
 
-                if (valueD != 0)
+                if (fixedPrecision || valueD != 0)
                 {
                     Append('.');
 
