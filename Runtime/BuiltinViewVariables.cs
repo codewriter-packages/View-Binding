@@ -23,6 +23,7 @@ namespace CodeWriter.ViewBinding
         public override void DoGUI(Rect position, GUIContent label,
             UnityEditor.SerializedProperty property, string variableName)
         {
+            GUI.SetNextControlName(variableName);
             property.boolValue = UnityEditor.EditorGUI.Toggle(position, label, property.boolValue);
         }
 
@@ -52,6 +53,7 @@ namespace CodeWriter.ViewBinding
         public override void DoGUI(Rect position, GUIContent label,
             UnityEditor.SerializedProperty property, string variableName)
         {
+            GUI.SetNextControlName(variableName);
             UnityEditor.EditorGUI.DelayedIntField(position, property, label);
         }
 
@@ -81,6 +83,7 @@ namespace CodeWriter.ViewBinding
         public override void DoGUI(Rect position, GUIContent label,
             UnityEditor.SerializedProperty property, string variableName)
         {
+            GUI.SetNextControlName(variableName);
             property.floatValue = UnityEditor.EditorGUI.FloatField(position, label, property.floatValue);
         }
 
@@ -112,6 +115,8 @@ namespace CodeWriter.ViewBinding
         {
             if (EnumVariableUtils.TryGetEnumValues(variableName, out var enumValues))
             {
+                GUI.SetNextControlName(variableName);
+
                 var selected = Array.IndexOf(enumValues, property.stringValue);
                 var newSelected = UnityEditor.EditorGUI.Popup(position, label.text, selected, enumValues);
                 if (newSelected != selected && newSelected != -1)
@@ -121,6 +126,7 @@ namespace CodeWriter.ViewBinding
             }
             else
             {
+                GUI.SetNextControlName(variableName);
                 UnityEditor.EditorGUI.DelayedTextField(position, property, label);
             }
         }
