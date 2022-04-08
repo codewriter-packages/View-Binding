@@ -1,29 +1,63 @@
+using System;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
 {
     [AddComponentMenu("View Binding/Adapters/Text Localize")]
-    public class TextLocalizeAdapter : SingleResultAdapterBase<string, ViewVariableString>
+    public class TextLocalizeAdapter : SingleResultAdapterBase<string, TextLocalizeAdapter.ViewVariableStringLocalized>
     {
         [Space]
         [SerializeField]
         private string format = "";
 
-        [SerializeField]
-        private ViewContextBase[] contexts = null;
-
         protected override string Adapt()
         {
-            var textBuilder = new ValueTextBuilder(ValueTextBuilder.DefaultCapacity);
-            try
+            return format;
+        }
+
+        [Serializable, Preserve]
+        public class ViewVariableStringLocalized : ViewVariable<string, ViewVariableStringLocalized>
+        {
+            [SerializeField]
+            private ViewContextBase[] extraContexts = null;
+
+            [Preserve]
+            public ViewVariableStringLocalized()
             {
-                TextFormatUtility.FormatText(ref textBuilder, format, null, contexts);
-                return BindingsLocalization.Localize(ref textBuilder);
             }
-            finally
+
+            public override void AppendValueTo(ref ValueTextBuilder builder)
             {
-                textBuilder.Dispose();
+                var formatTextBuilder = new ValueTextBuilder(ValueTextBuilder.DefaultCapacity);
+                var localizedTextBuilder = new ValueTextBuilder(ValueTextBuilder.DefaultCapacity);
+                try
+                {
+                    TextFormatUtility.FormatText(ref formatTextBuilder, Value, null, extraContexts);
+                    var localizedString = BindingsLocalization.Localize(ref formatTextBuilder);
+
+                    TextFormatUtility.FormatText(ref localizedTextBuilder, localizedString, null, extraContexts);
+
+                    builder.Append(localizedTextBuilder.AsSpan());
+                }
+                finally
+                {
+                    formatTextBuilder.Dispose();
+                    localizedTextBuilder.Dispose();
+                }
             }
+
+#if UNITY_EDITOR
+            public override void DoGUI(Rect position, GUIContent label, SerializedProperty property,
+                string variableName)
+            {
+            }
+
+            public override void DoRuntimeGUI(Rect position, GUIContent label, string variableName)
+            {
+            }
+#endif
         }
     }
 }
