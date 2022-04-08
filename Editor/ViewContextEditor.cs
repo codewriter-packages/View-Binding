@@ -342,6 +342,7 @@ namespace CodeWriter.ViewBinding.Editor
                 .GetAssemblies()
                 .SelectMany(asm => asm.GetTypes())
                 .Where(type => typeof(TBase).IsAssignableFrom(type) && !type.IsAbstract)
+                .Where(type => type.GetCustomAttribute<ExposedViewEntryAttribute>() != null)
                 .OrderBy(type => type.Name);
         }
     }

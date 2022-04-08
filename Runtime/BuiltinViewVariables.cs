@@ -4,7 +4,7 @@ using UnityEngine.Scripting;
 
 namespace CodeWriter.ViewBinding
 {
-    [Serializable, Preserve]
+    [Serializable, Preserve, ExposedViewEntry]
     public sealed class ViewVariableBool : ViewVariable<bool, ViewVariableBool>
     {
         public override string TypeDisplayName => "Boolean";
@@ -34,7 +34,7 @@ namespace CodeWriter.ViewBinding
 #endif
     }
 
-    [Serializable, Preserve]
+    [Serializable, Preserve, ExposedViewEntry]
     public sealed class ViewVariableInt : ViewVariable<int, ViewVariableInt>
     {
         public override string TypeDisplayName => "Integer";
@@ -64,7 +64,7 @@ namespace CodeWriter.ViewBinding
 #endif
     }
 
-    [Serializable, Preserve]
+    [Serializable, Preserve, ExposedViewEntry]
     public sealed class ViewVariableFloat : ViewVariable<float, ViewVariableFloat>
     {
         public override string TypeDisplayName => "Float";
@@ -94,7 +94,7 @@ namespace CodeWriter.ViewBinding
 #endif
     }
 
-    [Serializable, Preserve]
+    [Serializable, Preserve, ExposedViewEntry]
     public sealed class ViewVariableString : ViewVariable<string, ViewVariableString>
     {
         public override string TypeDisplayName => "String";

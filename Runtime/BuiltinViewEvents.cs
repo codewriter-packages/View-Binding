@@ -4,7 +4,7 @@ using UnityEngine.Scripting;
 
 namespace CodeWriter.ViewBinding
 {
-    [Serializable, Preserve]
+    [Serializable, Preserve, ExposedViewEntry]
     public sealed class ViewEventVoid : ViewEvent<ViewEventVoid.Void, ViewEventVoid>
     {
         private List<Action> _listeners;
@@ -75,7 +75,7 @@ namespace CodeWriter.ViewBinding
         }
     }
 
-    [Serializable, Preserve]
+    [Serializable, Preserve, ExposedViewEntry]
     public sealed class ViewEventBool : ViewParametrizedEvent<bool, ViewEventBool>
     {
         public override string TypeDisplayName => "Boolean";
@@ -86,7 +86,7 @@ namespace CodeWriter.ViewBinding
         }
     }
 
-    [Serializable, Preserve]
+    [Serializable, Preserve, ExposedViewEntry]
     public sealed class ViewEventInt : ViewParametrizedEvent<int, ViewEventInt>
     {
         public override string TypeDisplayName => "Integer";
@@ -97,7 +97,7 @@ namespace CodeWriter.ViewBinding
         }
     }
 
-    [Serializable, Preserve]
+    [Serializable, Preserve, ExposedViewEntry]
     public sealed class ViewEventFloat : ViewParametrizedEvent<float, ViewEventFloat>
     {
         public override string TypeDisplayName => "Float";
@@ -108,7 +108,7 @@ namespace CodeWriter.ViewBinding
         }
     }
 
-    [Serializable, Preserve]
+    [Serializable, Preserve, ExposedViewEntry]
     public sealed class ViewEventString : ViewParametrizedEvent<string, ViewEventString>
     {
         public override string TypeDisplayName => "String";
