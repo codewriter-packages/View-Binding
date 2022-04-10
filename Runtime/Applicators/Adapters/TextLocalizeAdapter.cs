@@ -34,10 +34,10 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
                 var localizedTextBuilder = new ValueTextBuilder(ValueTextBuilder.DefaultCapacity);
                 try
                 {
-                    TextFormatUtility.FormatText(ref formatTextBuilder, Value, null, extraContexts);
+                    formatTextBuilder.AppendFormat(Value, extraContexts);
                     var localizedString = BindingsLocalization.Localize(ref formatTextBuilder);
 
-                    TextFormatUtility.FormatText(ref localizedTextBuilder, localizedString, null, extraContexts);
+                    localizedTextBuilder.AppendFormat(localizedString, extraContexts);
 
                     builder.Append(localizedTextBuilder.AsSpan());
                 }
