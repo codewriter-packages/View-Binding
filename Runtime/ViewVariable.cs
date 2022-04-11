@@ -118,10 +118,14 @@ namespace CodeWriter.ViewBinding
         public abstract bool IsRootVariableFor(ViewVariable viewVariable);
 
 #if UNITY_EDITOR
-        public abstract void DoGUI(Rect position, GUIContent label,
-            UnityEditor.SerializedProperty property, string variableName);
+        public virtual void DoGUI(Rect position, GUIContent label,
+            UnityEditor.SerializedProperty property, string variableName)
+        {
+        }
 
-        public abstract void DoRuntimeGUI(Rect position, GUIContent label, string variableName);
+        public virtual void DoRuntimeGUI(Rect position, GUIContent label, string variableName)
+        {
+        }
 #endif
 
         internal override string GetErrorMessage()

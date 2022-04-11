@@ -1,5 +1,4 @@
 using System;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Scripting;
 
@@ -47,17 +46,6 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
                     localizedTextBuilder.Dispose();
                 }
             }
-
-#if UNITY_EDITOR
-            public override void DoGUI(Rect position, GUIContent label, SerializedProperty property,
-                string variableName)
-            {
-            }
-
-            public override void DoRuntimeGUI(Rect position, GUIContent label, string variableName)
-            {
-            }
-#endif
         }
     }
 }
