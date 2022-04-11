@@ -8,13 +8,38 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
     {
         [Space]
         [SerializeField]
-        private string formatDays = "TIME_D_H";
+        private bool showDays = false;
 
         [SerializeField]
-        private string formatHours = "TIME_H_M";
+        private bool showHours = false;
 
         [SerializeField]
-        private string formatMinutes = "TIME_M_S";
+        private bool showMinutes = false;
+
+        [Space]
+        [SerializeField]
+        private string formatDaysHoursMinutes = "TIME_D_H_M";
+
+        [SerializeField]
+        private string formatHoursMinutesSeconds = "TIME_H_M_S";
+
+        [SerializeField]
+        private string formatDaysHours = "TIME_D_H";
+
+        [SerializeField]
+        private string formatHoursMinutes = "TIME_H_M";
+
+        [SerializeField]
+        private string formatMinutesSeconds = "TIME_M_S";
+
+        [SerializeField]
+        private string formatHours = "TIME_H";
+
+        [SerializeField]
+        private string formatDays = "TIME_D";
+
+        [SerializeField]
+        private string formatMinutes = "TIME_M";
 
         [SerializeField]
         private string formatSeconds = "TIME_S";
@@ -25,48 +50,61 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         protected override string GetTimeStringFormat(TimeSpan span)
         {
             days.Value = (int) span.TotalDays;
-            if (days.Value > 0)
+            if (days.Value > 0 && showDays)
             {
                 hours.Value = span.Hours;
                 minutes.Value = span.Minutes;
                 seconds.Value = span.Seconds;
 
-                if (!string.IsNullOrEmpty(formatDays))
+                if (hours.Value > 0 && minutes.Value > 0)
                 {
-                    return formatDays;
+                    return formatDaysHoursMinutes;
                 }
+
+                if (hours.Value > 0)
+                {
+                    return formatDaysHours;
+                }
+
+                return formatDays;
             }
 
             hours.Value = (int) span.TotalHours;
-            if (hours.Value > 0)
+            if (hours.Value > 0 && showHours)
             {
                 minutes.Value = span.Minutes;
                 seconds.Value = span.Seconds;
 
-                if (!string.IsNullOrEmpty(formatHours))
+                if (minutes.Value > 0 && seconds.Value > 0)
                 {
-                    return formatHours;
+                    return formatHoursMinutesSeconds;
                 }
+
+                if (minutes.Value > 0)
+                {
+                    return formatHoursMinutes;
+                }
+
+                return formatHours;
             }
 
             minutes.Value = (int) span.TotalMinutes;
-            if (minutes.Value > 0)
+            if (minutes.Value > 0 && showMinutes)
             {
                 seconds.Value = span.Seconds;
 
-                if (!string.IsNullOrEmpty(formatMinutes))
+                if (seconds.Value > 0)
                 {
-                    return formatMinutes;
+                    return formatMinutesSeconds;
                 }
+
+                return formatMinutes;
             }
 
             seconds.Value = (int) span.TotalSeconds;
             if (seconds.Value > 0)
             {
-                if (!string.IsNullOrEmpty(formatSeconds))
-                {
-                    return formatSeconds;
-                }
+                return formatSeconds;
             }
 
             return formatZero;
