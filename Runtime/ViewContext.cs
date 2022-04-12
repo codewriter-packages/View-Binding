@@ -83,7 +83,7 @@ namespace CodeWriter.ViewBinding
                     }
 
                     return null;
-                }, debugName: name, keepAlive: true);
+                }, debugName: name, keepAlive: renderOnStart);
             }
         }
 
