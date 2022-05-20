@@ -13,7 +13,7 @@
     "defineConstraints": [],
     "versionDefines": [
         {
-            "name": "com.unimob.ui",
+            "name": "com.codewriter.unimob.ui",
             "expression": "0.0.1",
             "define": "UNIMOB_UI"
         }
