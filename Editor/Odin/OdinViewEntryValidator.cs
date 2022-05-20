@@ -18,7 +18,7 @@ namespace CodeWriter.ViewBinding.Editor.Odin
 #else
         protected override void Validate(TViewEntry value, ValidationResult result)
         {
-            ValudateInternal(value, result);
+            ValidateInternal(value, result);
         }
 #endif
 
