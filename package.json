@@ -2,10 +2,10 @@
   "name": "com.codewriter.view-binding",
   "displayName": "View Binding",
   "description": "View binding library for Unity",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "unity": "2020.1",
   "license": "MIT",
-  "author": "Vlad Vanifatov (https://github.com/vanifatovvlad)",
+  "author": "CodeWriter (https://github.com/orgs/codewriter-packages)",
   "homepage": "https://github.com/codewriter-packages/View-Binding#readme",
   "dependencies": {}
 }
