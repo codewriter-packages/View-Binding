@@ -16,7 +16,11 @@ namespace CodeWriter.ViewBinding
             where TVariable : ViewVariable<T, TVariable>
         {
             var atom = Atom.Computed(it.ViewLifetime, f);
-            var activation = new Action(() => variable.SetSource(atom));
+            var activation = new Action(() =>
+            {
+                atom.Invalidate();
+                variable.SetSource(atom);
+            });
             var deactivation = new Action(() => variable.SetSource(null));
 
             it.AddActivationCallback(activation);
@@ -26,7 +30,7 @@ namespace CodeWriter.ViewBinding
             {
                 using (Atom.NoWatch)
                 {
-                    activation.Invoke();                    
+                    activation.Invoke();
                 }
             }
         }
@@ -47,7 +51,7 @@ namespace CodeWriter.ViewBinding
             {
                 using (Atom.NoWatch)
                 {
-                    activation.Invoke();                    
+                    activation.Invoke();
                 }
             }
         }
@@ -67,7 +71,7 @@ namespace CodeWriter.ViewBinding
             {
                 using (Atom.NoWatch)
                 {
-                    activation.Invoke();                    
+                    activation.Invoke();
                 }
             }
         }
