@@ -36,6 +36,8 @@ namespace CodeWriter.ViewBinding.Editor
         private ReorderableList _eventsListDrawer;
         private FieldInfo _eventsFieldInfo;
 
+        private bool _listenersIsMissingError;
+
         private ViewContext TargetContext => (ViewContext) target;
 
         private void OnEnable()
@@ -53,6 +55,8 @@ namespace CodeWriter.ViewBinding.Editor
             _eventsListDrawer = CreateEntryList<ViewEvent>(_eventsProp, "Events", DrawEvent, TargetContext);
 
             _variablesListDrawer.drawHeaderCallback = DoVariablesHeader;
+            
+            RevalidateListeners();
         }
 
         public override bool RequiresConstantRepaint()
@@ -105,43 +109,29 @@ namespace CodeWriter.ViewBinding.Editor
             }
         }
 
+        private void RevalidateListeners()
+        {
+            _listenersIsMissingError = !TargetContext.Listeners.SequenceEqual(TargetContext.SearchListeners());
+        }
+
         private void DoListenersGUI()
         {
-            var headerRect = GUILayoutUtility.GetRect(GUIContent.none, GUI.skin.label);
-            var headerLabelRect = new Rect(headerRect)
+            if (_listenersIsMissingError)
             {
-                width = EditorGUIUtility.labelWidth
-            };
-            var headerContentRect = new Rect(headerRect)
-            {
-                xMin = headerLabelRect.xMax
-            };
-
-            using (new EditorGUI.DisabledScope(true))
-            {
-                EditorGUI.PropertyField(headerLabelRect, _listenersProp, false);
-
-                if (_listenersProp.isExpanded)
-                {
-                    EditorGUI.indentLevel++;
-
-                    for (int i = 0, len = _listenersProp.arraySize; i < len; i++)
-                    {
-                        EditorGUILayout.PropertyField(_listenersProp.GetArrayElementAtIndex(i));
-                    }
-
-                    if (_listenersProp.arraySize == 0)
-                    {
-                        GUILayout.Label("No listeners");
-                    }
-
-                    EditorGUI.indentLevel--;
-                }
+                EditorGUILayout.HelpBox("Listeners is missing", MessageType.Error);
             }
 
-            if (GUI.Button(headerContentRect, "Fill Listeners"))
+            using (new GUILayout.HorizontalScope())
             {
-                FillListeners();
+                using (new EditorGUI.DisabledScope(true))
+                {
+                    EditorGUILayout.PropertyField(_listenersProp);
+                }
+
+                if (GUILayout.Button("Fill Listeners"))
+                {
+                    FillListeners();
+                }
             }
 
             EditorGUILayout.Space();
@@ -153,7 +143,9 @@ namespace CodeWriter.ViewBinding.Editor
 
             var viewContext = (ViewContext) target;
 
-            viewContext.FillListeners();
+            viewContext.SetListeners(viewContext.SearchListeners());
+            
+            RevalidateListeners();
 
             EditorUtility.SetDirty(viewContext);
         }
@@ -323,8 +315,6 @@ namespace CodeWriter.ViewBinding.Editor
         private void ApplyApplicators()
         {
             serializedObject.ApplyModifiedProperties();
-
-            TargetContext.FillListeners();
 
             foreach (var listener in TargetContext.Listeners)
             {

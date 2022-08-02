@@ -105,14 +105,22 @@ namespace CodeWriter.ViewBinding
             LinkToRender();
         }
 
-        internal void FillListeners()
+        internal IEnumerable<ViewBindingBehaviour> SearchListeners()
+        {
+            foreach (var it in gameObject.GetComponentsInChildren<ViewBindingBehaviour>(true)) {
+                if (it == null || it is ViewContext || it.GetComponentInParent<ViewContext>() != this)
+                {
+                    continue;
+                }
+
+                yield return it;
+            }
+        }
+
+        internal void SetListeners(IEnumerable<ViewBindingBehaviour> list)
         {
             listeners.Clear();
-            listeners.AddRange(gameObject.GetComponentsInChildren<ViewBindingBehaviour>(true));
-            listeners.RemoveAll(it =>
-                it == null ||
-                it is ViewContext ||
-                it.GetComponentInParent<ViewContext>() != this);
+            listeners.AddRange(list);
         }
     }
 }
