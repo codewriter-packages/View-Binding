@@ -111,6 +111,10 @@ namespace CodeWriter.ViewBinding.Editor
 
         private void RevalidateListeners()
         {
+            if (Application.isPlaying || EditorUtility.IsPersistent(serializedObject.targetObject)) {
+                return;
+            }
+            
             _listenersIsMissingError = !TargetContext.Listeners.SequenceEqual(TargetContext.SearchListeners());
         }
 
