@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEngine;
@@ -67,10 +68,23 @@ namespace CodeWriter.ViewBinding.Editor
 
                 if (extraContextsProp != null)
                 {
-                    var extraContexts = Enumerable.Empty<ViewContextBase>()
-                        .Concat(mb.GetComponentsInParent<ViewContextBase>())
-                        .Where(it => it != null && it != mb && it != primaryContext)
-                        .ToList();
+                    var allValues = mb.GetComponentsInParent<ViewContextBase>();
+
+                    var extraContexts = new List<ViewContextBase>();
+                    extraContexts.AddRange(allValues);
+                    extraContexts.RemoveAll(it => it == null || it == mb || it == primaryContext);
+
+                    if (mb is ViewContextBase targetViewContext)
+                    {
+                        var selfValues = mb.GetComponents<ViewContextBase>();
+
+                        extraContexts.RemoveAll(it =>
+                        {
+                            var selfIndex = Array.IndexOf(selfValues, targetViewContext);
+                            var otherIndex = Array.IndexOf(selfValues, it);
+                            return selfIndex < otherIndex;
+                        });
+                    }
 
                     extraContextsProp.arraySize = extraContexts.Count;
                     for (var i = 0; i < extraContexts.Count; i++)
