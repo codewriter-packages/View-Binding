@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
 {
-    [AddComponentMenu("View Binding/Adapters/Bool to String")]
+    [AddComponentMenu("View Binding/Adapters/[Binding] Bool to String Adapter")]
     public class BoolToStringAdapter : SingleResultAdapterBase<string, ViewVariableString>
     {
         [Space]

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
 {
-    [AddComponentMenu("View Binding/Adapters/Float Format")]
+    [AddComponentMenu("View Binding/Adapters/[Binding] Float Format Adapter")]
     public class FloatFormatAdapter : SingleResultAdapterBase<float, FloatFormatAdapter.ViewVariableFloatFormatted>
     {
         [Space]

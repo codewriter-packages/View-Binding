@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
 {
-    [AddComponentMenu("View Binding/Adapters/Time Localize")]
+    [AddComponentMenu("View Binding/Adapters/[Binding] Time Localize Adapter")]
     public class TimeLocalizeAdapter : TimeLocalizeAdapterBase
     {
         [Space]

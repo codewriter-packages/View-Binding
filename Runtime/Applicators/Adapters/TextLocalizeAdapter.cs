@@ -4,7 +4,7 @@ using UnityEngine.Scripting;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
 {
-    [AddComponentMenu("View Binding/Adapters/Text Localize")]
+    [AddComponentMenu("View Binding/Adapters/[Binding] Text Localize Adapter")]
     public class TextLocalizeAdapter : SingleResultAdapterBase<string, TextLocalizeAdapter.ViewVariableStringLocalized>
     {
         [Space]

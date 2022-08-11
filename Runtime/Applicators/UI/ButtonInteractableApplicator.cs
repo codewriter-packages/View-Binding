@@ -5,7 +5,7 @@ namespace CodeWriter.ViewBinding.Applicators.UI
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Button))]
-    [AddComponentMenu("View Binding/UI/Button Interactable")]
+    [AddComponentMenu("View Binding/UI/[Binding] Button Interactable Applicator")]
     public sealed class ButtonInteractableApplicator : ComponentApplicatorBase<Button, ViewVariableBool>
     {
         [SerializeField]

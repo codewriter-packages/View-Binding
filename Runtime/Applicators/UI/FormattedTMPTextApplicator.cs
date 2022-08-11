@@ -5,7 +5,7 @@ namespace CodeWriter.ViewBinding.Applicators.UI {
 
     [DisallowMultipleComponent]
     [RequireComponent(typeof(TMP_Text))]
-    [AddComponentMenu("View Binding/UI/Formatted TMP Text")]
+    [AddComponentMenu("View Binding/UI/[Binding] Formatted TMP Text Applicator")]
     public sealed class FormattedTMPTextApplicator : ApplicatorBase {
         [SerializeField]
 #if ODIN_INSPECTOR

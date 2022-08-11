@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
 {
-    [AddComponentMenu("View Binding/Adapters/Float Ratio")]
+    [AddComponentMenu("View Binding/Adapters/[Binding] Float Ratio Adapter")]
     public sealed class FloatRatioAdapter : SingleResultAdapterBase<float, ViewVariableFloat>
     {
         [Space]
