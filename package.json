@@ -7,5 +7,7 @@
   "license": "MIT",
   "author": "CodeWriter (https://github.com/orgs/codewriter-packages)",
   "homepage": "https://github.com/codewriter-packages/View-Binding#readme",
-  "dependencies": {}
+  "dependencies": {
+    "com.codewriter.unimob": "2.2.0"
+  }
 }
