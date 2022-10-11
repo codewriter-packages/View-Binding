@@ -1,12 +1,13 @@
-﻿using UnityEngine;
-
-namespace CodeWriter.ViewBinding.Applicators.UI {
+﻿namespace CodeWriter.ViewBinding
+{
     using TMPro;
+    using UnityEngine;
 
     [DisallowMultipleComponent]
     [RequireComponent(typeof(TMP_Text))]
-    [AddComponentMenu("View Binding/UI/[Binding] Formatted TMP Text Applicator")]
-    public sealed class FormattedTMPTextApplicator : ApplicatorBase {
+    [AddComponentMenu("View Binding/UI/[Binding] Localized TMP Text Applicator")]
+    public class LocalizedTMPTextApplicator : ApplicatorBase
+    {
         [SerializeField]
 #if ODIN_INSPECTOR
         [Sirenix.OdinInspector.Required]
@@ -19,13 +20,20 @@ namespace CodeWriter.ViewBinding.Applicators.UI {
         [SerializeField]
         private ViewContextBase[] extraContexts = new ViewContextBase[0];
 
-        protected override void Apply() {
+        protected override void Apply()
+        {
             var textBuilder = new ValueTextBuilder(ValueTextBuilder.DefaultCapacity);
-            try {
+            var localizedTextBuilder = new ValueTextBuilder(ValueTextBuilder.DefaultCapacity);
+            try
+            {
                 textBuilder.AppendFormat(format, extraContexts);
-                target.SetText(textBuilder.RawCharArray, 0, textBuilder.Length);
+                var localizedString = BindingsLocalization.Localize(ref textBuilder);
+                localizedTextBuilder.AppendFormat(localizedString, extraContexts);
+                target.SetText(localizedTextBuilder.RawCharArray, 0, localizedTextBuilder.Length);
             }
-            finally {
+            finally
+            {
+                localizedTextBuilder.Dispose();
                 textBuilder.Dispose();
             }
             
@@ -48,7 +56,8 @@ namespace CodeWriter.ViewBinding.Applicators.UI {
             }
         }
 
-        protected override void Reset() {
+        protected override void Reset()
+        {
             base.Reset();
 
             target = GetComponent<TMP_Text>();
