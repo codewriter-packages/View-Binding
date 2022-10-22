@@ -44,7 +44,7 @@ namespace CodeWriter.ViewBinding.Editor.Applicators
 
             if (EditorGUI.EndChangeCheck())
             {
-                if (target is FormattedTMPTextApplicator applicator)
+                if (target is LocalizedTMPTextApplicator applicator)
                 {
                     serializedObject.ApplyModifiedProperties();
                     applicator.Apply();
