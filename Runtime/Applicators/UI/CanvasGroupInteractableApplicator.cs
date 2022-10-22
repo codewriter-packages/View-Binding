@@ -5,7 +5,7 @@ namespace CodeWriter.ViewBinding.Extras
 {
     [DisallowMultipleComponent]
     [RequireComponent(typeof(CanvasGroup))]
-    [AddComponentMenu("View Binding/UI/[Binding] Canvas Interactable Applicator")]
+    [AddComponentMenu("View Binding/UI/[Binding] CanvasGroup Interactable Applicator")]
     public class CanvasGroupInteractableApplicator : ComponentApplicatorBase<CanvasGroup, ViewVariableBool>
     {
         [SerializeField] private bool inverse = false;

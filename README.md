@@ -61,21 +61,29 @@ public class ViewBindingSample : MonoBehaviour
 #### Builtin applicators:
 - UnityEvent ([Bool](./Runtime/Applicators/UnityEvent/UnityEventBoolApplicator.cs), [Float](./Runtime/Applicators/UnityEvent/UnityEventFloatApplicator.cs), [Integer](./Runtime/Applicators/UnityEvent/UnityEventIntApplicator.cs), [String](./Runtime/Applicators/UnityEvent/UnityEventStringApplicator.cs))
 - [GameObject - Activity](./Runtime/Applicators/GameObjectActivityApplicator.cs)
+- [UI CanvasGroup - Alpha](./Runtime/Applicators/UI/CanvasGroupAlphaApplicator.cs)
+- [UI CanvasGroup - Interactable](./Runtime/Applicators/UI/CanvasGroupInteractableApplicator.cs)
+- [UI CanvasGroup - RaycastTarget](./Runtime/Applicators/UI/CanvasGroupRaycastTargetApplicator.cs)
+- [UI CanvasGroup - Visibility](./Runtime/Applicators/UI/CanvasGroupVisibilityApplicator.cs)
 - [UI Button - Interactable](./Runtime/Applicators/UI/ButtonInteractableApplicator.cs)
+- [UI Image - Enabled](./Runtime/Applicators/UI/ImageEnabledApplicator.cs)
 - [UI Image - Fill Amount](./Runtime/Applicators/UI/ImageFillAmountApplicator.cs)
 - [UI InputField - Text](./Runtime/Applicators/UI/InputFieldApplicator.cs)
 - [UI Slider - Value](./Runtime/Applicators/UI/SliderValueApplicator.cs)
 - [UI Text - Text](./Runtime/Applicators/UI/TextApplicator.cs)
+- [UI TextMeshPro - Text](./Runtime/Applicators/UI/TMPTextApplicator.cs)
+- [UI TextMeshPro - Formatted Text](./Runtime/Applicators/UI/FormattedTMPTextApplicator.cs)
+- [UI TextMeshPro - Localized Text](./Runtime/Applicators/UI/LocalizedTMPTextApplicator.cs)
 - [UI Toggle - IsOn](./Runtime/Applicators/UI/ToggleApplicator.cs)
 
 #### Builtin adapters:
-- [Inverse Boolean](./Runtime/Applicators/Adapters/InverseBoolAdapter.cs)
-- [Compare String](./Runtime/Applicators/Adapters/CompareStringAdapter.cs)
 - [Bool To String](./Runtime/Applicators/Adapters/BoolToStringAdapter.cs)
+- [Compare String](./Runtime/Applicators/Adapters/CompareStringAdapter.cs)
+- [Float Format](./Runtime/Applicators/Adapters/FloatFormatAdapter.cs)
 - [Float Ratio](./Runtime/Applicators/Adapters/FloatRatioAdapter.cs)
+- [Inverse Boolean](./Runtime/Applicators/Adapters/InverseBoolAdapter.cs)
 - [Text Localize](./Runtime/Applicators/Adapters/TextLocalizeAdapter.cs)
 - [Time Localize](./Runtime/Applicators/Adapters/TimeLocalizeAdapter.cs)
-- [Float Format](./Runtime/Applicators/Adapters/FloatFormatAdapter.cs)
 
 #### Builtin binders:
 - [UI Button - Click](./Runtime/Binders/UI/ButtonClickBinder.cs)
