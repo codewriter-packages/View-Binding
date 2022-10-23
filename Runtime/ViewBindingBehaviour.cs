@@ -5,6 +5,16 @@ namespace CodeWriter.ViewBinding
 {
     public abstract class ViewBindingBehaviour : MonoBehaviour
     {
+        public static void Setup(ViewBindingBehaviour viewBindingBehaviour, Lifetime lifetime)
+        {
+            viewBindingBehaviour.Setup(lifetime);
+        }
+
+        public static void LinkToRender(ViewBindingBehaviour viewBindingBehaviour)
+        {
+            viewBindingBehaviour.LinkToRender();
+        }
+        
         protected internal virtual void Setup(Lifetime lifetime)
         {
         }
