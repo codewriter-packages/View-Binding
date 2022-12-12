@@ -23,5 +23,29 @@ namespace CodeWriter.ViewBinding
         {
             return _callback.Invoke(ref textBuilder);
         }
+
+        public static string Localize(string text)
+        {
+            var textBuilder = new ValueTextBuilder(ValueTextBuilder.DefaultCapacity);
+            try
+            {
+                textBuilder.Append(text);
+                return Localize(ref textBuilder);
+            }
+            finally
+            {
+                textBuilder.Dispose();
+            }
+        }
+
+        public static string Localize(string text, string defaultValue)
+        {
+            if (_callback == DefaultCallback)
+            {
+                return defaultValue;
+            }
+
+            return Localize(text);
+        }
     }
 }
