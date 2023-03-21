@@ -1,4 +1,6 @@
-﻿namespace CodeWriter.ViewBinding
+﻿using System;
+
+namespace CodeWriter.ViewBinding
 {
     using TMPro;
     using UnityEngine;
@@ -18,7 +20,7 @@
         private string format;
 
         [SerializeField]
-        private ViewContextBase[] extraContexts = new ViewContextBase[0];
+        private ViewContextBase[] extraContexts = Array.Empty<ViewContextBase>();
 
         protected override void Apply()
         {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.UI {
     using TMPro;
@@ -17,7 +18,7 @@ namespace CodeWriter.ViewBinding.Applicators.UI {
         private string format;
 
         [SerializeField]
-        private ViewContextBase[] extraContexts = new ViewContextBase[0];
+        private ViewContextBase[] extraContexts = Array.Empty<ViewContextBase>();
 
         protected override void Apply() {
             var textBuilder = new ValueTextBuilder(ValueTextBuilder.DefaultCapacity);
