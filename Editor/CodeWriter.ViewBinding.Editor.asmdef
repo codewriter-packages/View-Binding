@@ -1,15 +1,18 @@
 {
     "name": "CodeWriter.ViewBinding.Editor",
+    "rootNamespace": "",
     "references": [
         "CodeWriter.ViewBinding",
-        "CodeWriter.ViewBinding.Applicators"
+        "CodeWriter.ViewBinding.Applicators",
+        "TriInspector",
+        "TriInspector.Editor"
     ],
     "includePlatforms": [
         "Editor"
     ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],

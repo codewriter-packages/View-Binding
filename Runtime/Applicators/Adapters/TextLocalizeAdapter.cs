@@ -1,4 +1,5 @@
 using System;
+using TriInspector;
 using UnityEngine;
 using UnityEngine.Scripting;
 
@@ -8,8 +9,18 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
     public class TextLocalizeAdapter : SingleResultAdapterBase<string, TextLocalizeAdapter.ViewVariableStringLocalized>
     {
         [Space]
+        [Required]
         [SerializeField]
         private string format = "";
+
+        [Required]
+        [ShowInInspector]
+        [ViewContextCollection]
+        public ViewContextBase[] ExtraContexts
+        {
+            get => result.extraContexts;
+            set => result.extraContexts = value;
+        }
 
         protected override string Adapt()
         {
@@ -20,7 +31,7 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         public class ViewVariableStringLocalized : ViewVariable<string, ViewVariableStringLocalized>
         {
             [SerializeField]
-            private ViewContextBase[] extraContexts = null;
+            internal ViewContextBase[] extraContexts = null;
 
             [Preserve]
             public ViewVariableStringLocalized()

@@ -1,4 +1,5 @@
 ﻿using System;
+using TriInspector;
 
 namespace CodeWriter.ViewBinding
 {
@@ -10,16 +11,18 @@ namespace CodeWriter.ViewBinding
     [AddComponentMenu("View Binding/UI/[Binding] Localized TMP Text Applicator")]
     public class LocalizedTMPTextApplicator : ApplicatorBase
     {
+        [Required]
         [SerializeField]
-#if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.Required]
-#endif
         private TMP_Text target;
 
+        [Required]
         [SerializeField]
+        [OnValueChanged(nameof(Apply))]
         private string format;
 
+        [Required]
         [SerializeField]
+        [ViewContextCollection]
         private ViewContextBase[] extraContexts = Array.Empty<ViewContextBase>();
 
         protected override void Apply()
@@ -38,7 +41,7 @@ namespace CodeWriter.ViewBinding
                 localizedTextBuilder.Dispose();
                 textBuilder.Dispose();
             }
-            
+
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {

@@ -34,12 +34,12 @@ namespace CodeWriter.ViewBinding
         {
             if (context == null)
             {
-                return "Context is null";
+                return "Context is missing";
             }
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                return "Name is none";
+                return "Name is required";
             }
 
             return null;

@@ -1,8 +1,10 @@
+using TriInspector;
 using UniMob;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding
 {
+    [HideMonoScript]
     public abstract class ViewBindingBehaviour : MonoBehaviour
     {
         public static void Setup(ViewBindingBehaviour viewBindingBehaviour, Lifetime lifetime)

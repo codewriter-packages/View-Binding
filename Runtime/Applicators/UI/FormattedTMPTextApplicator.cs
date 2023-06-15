@@ -1,35 +1,43 @@
 ﻿using System;
+using TriInspector;
 using UnityEngine;
 
-namespace CodeWriter.ViewBinding.Applicators.UI {
+namespace CodeWriter.ViewBinding.Applicators.UI
+{
     using TMPro;
 
     [DisallowMultipleComponent]
     [RequireComponent(typeof(TMP_Text))]
     [AddComponentMenu("View Binding/UI/[Binding] Formatted TMP Text Applicator")]
-    public sealed class FormattedTMPTextApplicator : ApplicatorBase {
+    public sealed class FormattedTMPTextApplicator : ApplicatorBase
+    {
+        [Required]
         [SerializeField]
-#if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.Required]
-#endif
         private TMP_Text target;
 
+        [Required]
         [SerializeField]
+        [OnValueChanged(nameof(Apply))]
         private string format;
 
+        [Required]
         [SerializeField]
+        [ViewContextCollection]
         private ViewContextBase[] extraContexts = Array.Empty<ViewContextBase>();
 
-        protected override void Apply() {
+        protected override void Apply()
+        {
             var textBuilder = new ValueTextBuilder(ValueTextBuilder.DefaultCapacity);
-            try {
+            try
+            {
                 textBuilder.AppendFormat(format, extraContexts);
                 target.SetText(textBuilder.RawCharArray, 0, textBuilder.Length);
             }
-            finally {
+            finally
+            {
                 textBuilder.Dispose();
             }
-            
+
 #if UNITY_EDITOR
             if (!Application.isPlaying)
             {
@@ -49,7 +57,8 @@ namespace CodeWriter.ViewBinding.Applicators.UI {
             }
         }
 
-        protected override void Reset() {
+        protected override void Reset()
+        {
             base.Reset();
 
             target = GetComponent<TMP_Text>();

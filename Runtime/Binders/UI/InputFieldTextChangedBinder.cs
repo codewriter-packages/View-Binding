@@ -1,3 +1,4 @@
+using TriInspector;
 using UniMob;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,10 +9,8 @@ namespace CodeWriter.ViewBinding.Binders.UI
     [RequireComponent(typeof(InputField))]
     public class InputFieldTextChangedBinder : ViewBindingBehaviour
     {
-#if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.Required]
-#endif
-        [SerializeField, HideInInspector]
+        [Required]
+        [SerializeField]
         private InputField inputField;
 
         [SerializeField]

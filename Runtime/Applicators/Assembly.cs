@@ -1,0 +1,3 @@
+﻿using TriInspector;
+
+[assembly: DrawWithTriInspector]

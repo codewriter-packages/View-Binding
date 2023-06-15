@@ -1,4 +1,5 @@
 using System;
+using TriInspector;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
@@ -9,6 +10,20 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         [Space]
         [SerializeField]
         private ViewVariableFloat source = default;
+
+        [ShowInInspector]
+        public int Precision
+        {
+            get => result.precision;
+            set => result.precision = value;
+        }
+
+        [ShowInInspector]
+        public bool FixedPrecision
+        {
+            get => result.fixedPrecision;
+            set => result.fixedPrecision = value;
+        }
 
         [Serializable]
         public class ViewVariableFloatFormatted : ViewVariable<float, ViewVariableFloatFormatted>

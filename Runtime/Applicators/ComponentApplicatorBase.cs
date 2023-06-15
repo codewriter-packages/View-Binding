@@ -1,3 +1,4 @@
+using TriInspector;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators
@@ -6,9 +7,7 @@ namespace CodeWriter.ViewBinding.Applicators
         where TTarget : Component
         where TVariable : ViewVariable
     {
-#if ODIN_INSPECTOR
-        [Sirenix.OdinInspector.Required]
-#endif
+        [Required]
         [SerializeField]
         private TTarget target;
 

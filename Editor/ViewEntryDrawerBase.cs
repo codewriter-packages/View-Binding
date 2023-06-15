@@ -8,6 +8,8 @@ namespace CodeWriter.ViewBinding.Editor
     internal abstract class ViewEntryDrawerBase<TEntry> : PropertyDrawer
         where TEntry : ViewEntry
     {
+        private static readonly List<Object> dirtyTargetObjects = new List<Object>();
+
         private const string NameFieldName = "name";
         private const string ContextFieldName = "context";
 
@@ -22,11 +24,18 @@ namespace CodeWriter.ViewBinding.Editor
 
             position = EditorGUI.PrefixLabel(position, label);
 
-            var disabled = Application.isPlaying ||
-                           (EditorUtility.IsPersistent(property.serializedObject.targetObject));
+            var targetObject = property.serializedObject.targetObject;
+
+            var disabled = Application.isPlaying || (EditorUtility.IsPersistent(targetObject));
             using (new EditorGUI.DisabledScope(disabled))
             {
                 DrawContent(position, property);
+            }
+
+            if (dirtyTargetObjects.Contains(targetObject))
+            {
+                dirtyTargetObjects.Remove(targetObject);
+                GUI.changed = true;
             }
 
             EditorGUI.EndProperty();
@@ -36,6 +45,12 @@ namespace CodeWriter.ViewBinding.Editor
         {
             var nameProp = property.FindPropertyRelative(NameFieldName);
             var contextProp = property.FindPropertyRelative(ContextFieldName);
+
+            if (property.serializedObject.targetObject == contextProp.objectReferenceValue)
+            {
+                EditorGUI.PropertyField(position, nameProp, Styles.NoneContent);
+                return;
+            }
 
             if (GUI.Button(position, nameProp.stringValue, EditorStyles.popup))
             {
@@ -73,6 +88,8 @@ namespace CodeWriter.ViewBinding.Editor
                             nameProp.stringValue = matchedEntry.Name;
                             contextProp.objectReferenceValue = matchedContext;
                             nameProp.serializedObject.ApplyModifiedProperties();
+
+                            dirtyTargetObjects.Add(mb);
                         });
                     }
                 }
