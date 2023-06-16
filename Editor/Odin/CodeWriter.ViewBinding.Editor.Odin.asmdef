@@ -1,0 +1,16 @@
+{
+    "name": "CodeWriter.ViewBinding.Editor.Odin",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d77d221e3cbcb9a42b77d258323285db"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
