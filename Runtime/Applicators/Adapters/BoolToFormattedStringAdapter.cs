@@ -11,11 +11,9 @@ namespace CodeWriter.ViewBinding.Applicators.Adapters
         [SerializeField]
         private ViewVariableBool source;
 
-        [Required]
         [SerializeField]
         private string trueFormat = "TRUE";
 
-        [Required]
         [SerializeField]
         private string falseFormat = "FALSE";
 
