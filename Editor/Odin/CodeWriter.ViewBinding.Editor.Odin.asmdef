@@ -2,9 +2,11 @@
     "name": "CodeWriter.ViewBinding.Editor.Odin",
     "rootNamespace": "",
     "references": [
-        "GUID:d77d221e3cbcb9a42b77d258323285db"
+        "CodeWriter.ViewBinding"
     ],
-    "includePlatforms": [],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
