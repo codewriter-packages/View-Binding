@@ -2,7 +2,7 @@
   "name": "com.codewriter.view-binding",
   "displayName": "View Binding",
   "description": "View binding library for Unity",
-  "version": "1.1.0",
+  "version": "3.0.0",
   "unity": "2020.1",
   "license": "MIT",
   "author": "CodeWriter (https://github.com/orgs/codewriter-packages)",
