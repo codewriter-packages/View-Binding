@@ -1,3 +1,4 @@
+using TriInspector;
 using UniMob;
 using UnityEngine;
 using UnityEngine.Scripting;
@@ -13,7 +14,9 @@ namespace CodeWriter.ViewBinding
         where TResultVariable : ViewVariable<TResult, TResultVariable>, new()
     {
         [SerializeField]
-        private TResultVariable result;
+        [LabelText("Alias")]
+        [PropertyOrder(-1)]
+        protected TResultVariable result;
 
         [Preserve]
         public SingleResultAdapterBase()

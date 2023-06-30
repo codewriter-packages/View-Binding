@@ -1,13 +1,15 @@
 {
     "name": "CodeWriter.ViewBinding",
+    "rootNamespace": "",
     "references": [
         "UniMob",
-        "UniMob.UI"
+        "UniMob.UI",
+        "TriInspector"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],

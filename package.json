@@ -8,6 +8,7 @@
   "author": "CodeWriter (https://github.com/orgs/codewriter-packages)",
   "homepage": "https://github.com/codewriter-packages/View-Binding#readme",
   "dependencies": {
-    "com.codewriter.unimob": "2.2.0"
+    "com.codewriter.unimob": "2.2.0",
+    "com.codewriter.triinspector": "1.12.0"
   }
 }

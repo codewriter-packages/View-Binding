@@ -5,12 +5,13 @@
         "CodeWriter.ViewBinding",
         "UniMob",
         "UniMob.UI",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "TriInspector"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [],
     "autoReferenced": false,
     "defineConstraints": [],

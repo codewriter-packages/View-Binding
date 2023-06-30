@@ -1,3 +1,4 @@
+using TriInspector;
 using UnityEngine;
 
 namespace CodeWriter.ViewBinding.Applicators.Adapters
