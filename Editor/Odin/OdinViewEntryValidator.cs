@@ -1,7 +1,7 @@
-﻿#if ODIN_INSPECTOR
-
-using CodeWriter.ViewBinding.Editor.Odin;
+﻿using CodeWriter.ViewBinding.Editor.Odin;
+using Sirenix.OdinInspector.Editor;
 using Sirenix.OdinInspector.Editor.Validation;
+using TriInspector.Editor.Integrations.Odin;
 
 [assembly: RegisterValidator(typeof(OdinViewEntryValidator<>))]
 
@@ -11,6 +11,16 @@ namespace CodeWriter.ViewBinding.Editor.Odin
         where TViewEntry : ViewEntry
     {
 #if ODIN_INSPECTOR_3_1
+        public override bool CanValidateProperty(InspectorProperty property)
+        {
+            if (TriOdinUtility.IsDrawnByTri(property.Tree.TargetType))
+            {
+                return false;
+            }
+
+            return base.CanValidateProperty(property);
+        }
+
         protected override void Validate(ValidationResult result)
         {
             ValidateInternal(ValueEntry.SmartValue, result);
@@ -35,5 +45,3 @@ namespace CodeWriter.ViewBinding.Editor.Odin
         }
     }
 }
-
-#endif

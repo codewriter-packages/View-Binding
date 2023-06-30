@@ -2,7 +2,8 @@
     "name": "CodeWriter.ViewBinding.Editor.Odin",
     "rootNamespace": "",
     "references": [
-        "CodeWriter.ViewBinding"
+        "CodeWriter.ViewBinding",
+        "TriInspector.Editor.Integrations.Odin"
     ],
     "includePlatforms": [
         "Editor"
@@ -12,7 +13,9 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [],
+    "defineConstraints": [
+        "ODIN_INSPECTOR"
+    ],
     "versionDefines": [],
     "noEngineReferences": false
 }
