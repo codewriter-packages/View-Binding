@@ -81,6 +81,7 @@ public class ViewBindingSample : MonoBehaviour
 #### Builtin adapters:
 - [Bool To String](./Runtime/Applicators/Adapters/BoolToStringAdapter.cs)
 - [Bool To Formatted String](./Runtime/Applicators/Adapters/BoolToFormattedStringAdapter.cs)
+- [Formatted Text](./Runtime/Applicators/Adapters/FormattedTextAdapter.cs)
 - [Compare String](./Runtime/Applicators/Adapters/CompareStringAdapter.cs)
 - [Float Format](./Runtime/Applicators/Adapters/FloatFormatAdapter.cs)
 - [Float Ratio](./Runtime/Applicators/Adapters/FloatRatioAdapter.cs)
