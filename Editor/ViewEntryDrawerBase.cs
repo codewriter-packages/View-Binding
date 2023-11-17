@@ -92,6 +92,11 @@ namespace CodeWriter.ViewBinding.Editor
                             dirtyTargetObjects.Add(mb);
                         });
                     }
+
+                    if (matchedEntries.Count == 0)
+                    {
+                        menu.AddDisabledItem(new GUIContent(GetNoEntriesMessage()), false);
+                    }
                 }
             }
             else
@@ -101,5 +106,7 @@ namespace CodeWriter.ViewBinding.Editor
 
             menu.DropDown(position);
         }
+
+        protected abstract string GetNoEntriesMessage();
     }
 }
