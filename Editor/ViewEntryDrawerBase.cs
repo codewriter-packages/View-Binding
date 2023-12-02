@@ -72,6 +72,8 @@ namespace CodeWriter.ViewBinding.Editor
                     .Where(it => it != null && it != mb)
                     .ToList();
 
+                var hasAnyEntry = false;
+
                 for (var contextIndex = 0; contextIndex < matchedContexts.Count; contextIndex++)
                 {
                     var matchedContext = matchedContexts[contextIndex];
@@ -91,12 +93,14 @@ namespace CodeWriter.ViewBinding.Editor
 
                             dirtyTargetObjects.Add(mb);
                         });
-                    }
 
-                    if (matchedEntries.Count == 0)
-                    {
-                        menu.AddDisabledItem(new GUIContent(GetNoEntriesMessage()), false);
+                        hasAnyEntry = true;
                     }
+                }
+
+                if (!hasAnyEntry)
+                {
+                    menu.AddDisabledItem(new GUIContent(GetNoEntriesMessage()), false);
                 }
             }
             else
