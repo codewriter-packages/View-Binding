@@ -25,6 +25,11 @@
             "name": "com.unity.textmeshpro",
             "expression": "",
             "define": "UNIMOB_UI_TMPRO"
+        },
+        {
+            "name": "com.unity.ugui",
+            "expression": "2.0.0",
+            "define": "UNIMOB_UI_TMPRO"
         }
     ],
     "noEngineReferences": false
