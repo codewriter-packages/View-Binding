@@ -119,7 +119,11 @@ Use dot notation in XML attributes:
         <GameObject name="Display" id="Display">
             <TextMeshProUGUI m_text="0" m_fontSize="36" m_fontColor="#FFFFFF"
                 m_HorizontalAlignment="Center" m_VerticalAlignment="Middle" />
-            <FormattedTMPTextApplicator target="#Display" format="&lt;counter&gt;" />
+            <FormattedTMPTextApplicator target="#Display" format="&lt;counter&gt;">
+                <Field name="extraContexts">
+                    <Item ref="#Root" />
+                </Field>
+            </FormattedTMPTextApplicator>
         </GameObject>
 
         <GameObject name="IncrementBtn" id="IncrementBtn">
@@ -310,21 +314,39 @@ These applicators do NOT use `source`. They format text from variables reference
 
 Formats text using `<variable_name>` placeholders. Requires `TMP_Text` on same GameObject.
 
+**`extraContexts` is required** — without it the applicator cannot resolve variable placeholders. Use `<Field>` to set the array with references to ViewContext(s):
+
+```xml
+<FormattedTMPTextApplicator target="#Display" format="Score: &lt;score&gt;">
+    <Field name="extraContexts">
+        <Item ref="#Root" />
+    </Field>
+</FormattedTMPTextApplicator>
+```
+
 | Field | Type | Description |
 |-------|------|-------------|
 | `target` | TMP_Text | Target text component (`#id` reference) |
 | `format` | string | Format string, e.g. `"Score: <score>"` |
-| `extraContexts` | ViewContextBase[] | Additional contexts to resolve variables from |
+| `extraContexts` | ViewContextBase[] | **Required.** Contexts to resolve variables from (use Field + Item ref) |
 
 #### LocalizedTMPTextApplicator
 
-Same as FormattedTMPTextApplicator but localizes the format string first.
+Same as FormattedTMPTextApplicator but localizes the format string first. **`extraContexts` is required.**
+
+```xml
+<LocalizedTMPTextApplicator target="#Display" format="ui_score">
+    <Field name="extraContexts">
+        <Item ref="#Root" />
+    </Field>
+</LocalizedTMPTextApplicator>
+```
 
 | Field | Type | Description |
 |-------|------|-------------|
 | `target` | TMP_Text | Target text component (`#id` reference) |
 | `format` | string | Localization key / format string |
-| `extraContexts` | ViewContextBase[] | Additional contexts to resolve variables from |
+| `extraContexts` | ViewContextBase[] | **Required.** Contexts to resolve variables from (use Field + Item ref) |
 
 ---
 
