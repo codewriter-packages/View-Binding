@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using CodeWriter.ViewBinding.Editor;
 using TriInspector;
 using UnityEngine;
 
-[assembly: RegisterTriAttributeValidator(typeof(ViewContextCollectionValidator))]
-
 namespace CodeWriter.ViewBinding.Editor
 {
+    [RegisterTriAttributeValidator]
     public class ViewContextCollectionValidator : TriAttributeValidator<ViewContextCollectionAttribute>
     {
         private static readonly List<ViewContextBase> TempContexts = new List<ViewContextBase>();

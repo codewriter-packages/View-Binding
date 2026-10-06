@@ -1,10 +1,8 @@
-﻿using CodeWriter.ViewBinding.Editor;
-using TriInspector;
-
-[assembly: RegisterTriValueValidator(typeof(ViewEntryValidator))]
+﻿using TriInspector;
 
 namespace CodeWriter.ViewBinding.Editor
 {
+    [RegisterTriValueValidator]
     public class ViewEntryValidator : TriValueValidator<ViewEntry>
     {
         public override TriValidationResult Validate(TriValue<ViewEntry> propertyValue)
